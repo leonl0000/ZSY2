@@ -14,7 +14,7 @@ How many possible hands are there of length cardsLeft
 In other words, there are 84M possible hands to be dealt
   at the start. This is not the number of possible
   opening game states as that has the additional
-  factor of the number
+  factor of the cards in the opponents hand
 """
 countHandsCache = {}
 def countHands(cardsLeft, depth=0):

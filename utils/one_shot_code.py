@@ -16,14 +16,74 @@ In other words, there are 84M possible hands to be dealt
   opening game states as that has the additional
   factor of the number
 """
+countHandsCache = {}
 def countHands(cardsLeft, depth=0):
     if cardsLeft == 0:
         return 1
-    if depth == 13 or depth == 14:
-        return countHands(cardsLeft-1,depth+1) + countHands(cardsLeft,depth+1)
     if depth == 15 and cardsLeft != 0:
         return 0
-    return sum([countHands(cardsLeft-i, depth+1) for i in range(min(5, cardsLeft+1))])
+    if (cardsLeft, depth) in countHandsCache:
+        return countHandsCache[(cardsLeft, depth)]
+    if depth == 13 or depth == 14:
+        val = countHands(cardsLeft-1,depth+1) + countHands(cardsLeft,depth+1)
+    else:
+        val = sum([countHands(cardsLeft-i, depth+1) for i in range(min(5, cardsLeft+1))])
+    countHandsCache[(cardsLeft, depth)] = val
+    return val
+
+
+
+"""
+Extension of countHands: How many possible opening states are there?
+The number of 18 card hands is the space of possible opening observations
+But, the state space includes the cards the opponent has as well
+So, how many possible ways are there to distribute 18 cards to each of two players
+    given that the suit doesn't matter?
+RE: depth is the value of the smallest card allowed.
+0 -> 3
+...
+7 -> 10
+8 -> J
+...
+11 -> A
+12 -> 2
+13 -> JB (Joker black)
+14 -> JR (Joker red)
+Results: 151,632,049,354,500 possible opening states
+"""
+countStatesCache = {}
+def countStates(cardsLeftA, cardsLeftB, depth=0):
+    # If there are no cards left to distribute, there's only one way to do it!
+    if cardsLeftA == 0:
+        if cardsLeftB == 0:
+            return 1
+        else:
+            return countHands(cardsLeftB, depth)
+    if cardsLeftB == 0:
+        return countHands(cardsLeftA, depth)
+    # If the depth has maxed out (i.e. the min card allowed to distribute > Joker red)
+    # there's no way to do it. It's invalid
+    if depth == 15 and (cardsLeftA != 0 or cardsLeftB != 0):
+        return 0
+    if (cardsLeftA, cardsLeftB, depth) in countStatesCache:
+        return countStatesCache[(cardsLeftA, cardsLeftB, depth)]
+    if (cardsLeftB, cardsLeftA, depth) in countStatesCache:
+        return countStatesCache[(cardsLeftB, cardsLeftA, depth)]
+    num = 0
+    if depth < 13:
+        for i in range(min(5, cardsLeftA+1)):
+            # give i cards of value "depth" to A
+            for j in range(min(5-i, cardsLeftB+1)):
+                # give j cards of value "depth" to B
+                num += countStates(cardsLeftA-i, cardsLeftB-j, depth+1)
+    else:
+        num += countStates(cardsLeftA, cardsLeftB, depth+1) + \
+                countStates(cardsLeftA-1, cardsLeftB, depth+1) + \
+                countStates(cardsLeftA, cardsLeftB-1, depth+1)
+    countStatesCache[(cardsLeftA, cardsLeftB, depth)] = num
+    return num
+
+
 
 
 """

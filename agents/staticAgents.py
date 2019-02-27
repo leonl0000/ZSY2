@@ -8,7 +8,15 @@ import numpy as np
 antiface = {'3':0, '4':1, '5':2, '6':3, '7':4, '8':5, '9':6, '10':7, '11':8, 'j':8, '12':9, 'q':9,
             '13':10, 'k':10, '14':11, 'a':11, '15':12, '2':12, '16':13, 'jk':13, 'jb':13, '17':14, 'jr': 14}
 
-class RandomAgent:
+class Agent:
+    def name(self):
+        raise NotImplementedError
+
+    def getMove(self, g):
+        moves = dc.getMovesFromGameState(g)
+        raise NotImplementedError
+
+class RandomAgent(Agent):
     def __init__(self):
         self.name = "Random"
 
@@ -17,7 +25,7 @@ class RandomAgent:
 
 
 
-class GreedyAgent:
+class GreedyAgent(Agent):
     def __init__(self):
         self.name = "Greedy"
 
@@ -25,13 +33,13 @@ class GreedyAgent:
         moves = dc.getMovesFromGameState(g)
         return moves[0] if len(moves) == 1 else moves[1]
 
-class HumanAgent:
+class HumanAgent(Agent):
     def __init__(self):
         self.name = "Human"
 
     def getMove(self, g):
         if len(g.history) != 0:
-            lastMove = g.history[-1]
+            lastMove = g.history[-1][0]
         else:
             lastMove = dc.emptyMove
         if len(g.history)%2 == 1:

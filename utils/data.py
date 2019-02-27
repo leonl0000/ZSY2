@@ -9,6 +9,8 @@ sys.path.append(homeDir)
 import pickle
 import h5py
 import utils.deckops as dc
+import itertools
+import tensorflow as tf
 
 
 
@@ -23,104 +25,123 @@ def loadObject(fname):
     return pickle.load(f)
 
 
+class Buffer:
+    def __init__(self, fileName="buffer.h5", max_eps_in_buffer=1000000, index_every = 1000):
+        self.fileName = fileName
+        self.sample_order = None
+        self.sample_ind = 0
 
-"""
-Take a list of the final game states, turns into labeled data
+        if not os.path.isfile(self.fileName):
+            self.expanded_states = np.zeros((0,5,15)).astype(np.uint8)
+            self.expanded_actions = np.zeros((0,5,15)).astype(np.uint8)
+            self.actions = np.zeros((0,1,15)).astype(np.int8)
+            self.step = np.zeros((0)).astype(np.int8)
+            self.remaining_steps = np.zeros((0)).astype(np.int8)
+            self.isWinner = np.zeros((0)).astype(np.int8)
 
-Each game has a history of moves. Each game will produce a set of datapoints as long
-    as the history. Each point in the history will become an (s,a) pair, where s
-    is the sum of the history up to that point for the player in question, sum for the
-    opponent, and the hand they have after the move they take, and a is the move they take.
-
-Each of these 4 things can be represented by a hand. With the expanded hand representation
-    each hand will be a (5,15) array with exactly 15 coordinates being 1 and the rest being
-    0. These will be flattenned and concatenated into a (300,1) matrix.
-
-Y will be a (2,1) matrix. The first coordinate represents if that player won in the end, the
-    second represents how many moves away the end is. The first will be the actual label,
-    the second will be used later if I want to add a gamma.
-"""
-def gameStatesToLabeledData_1(finalGameStates):
-    X_A = []
-    X_B = []
-    Y_A = []
-    Y_B = []
-    for gameState in finalGameStates:
-        A_Hand = gameState.A_Hand
-        B_Hand = gameState.B_Hand
-        if len(gameState.history)%2 == 1:
-            hands = [A_Hand, B_Hand]
-            X = [X_A, X_B]
-            Y = [Y_A, Y_B]
+            self.max_eps_in_buffer = max_eps_in_buffer
+            self.buffer_idx = []
+            self.index_every = index_every
         else:
-            hands = [B_Hand, A_Hand]
-            X = [X_B, X_A]
-            Y = [Y_B, Y_A]
+            self.loadFromFile()
 
-        played = [np.sum(gameState.history[-1::-2], axis=0),
-                  np.sum(gameState.history[-2::-2], axis=0)]
+    # NOTE: Ensure all data is int8 or uint8, or else numpy concats will be VERY slow
 
-        for i in range(0, len(gameState.history)):
-            hand = hands[i%2]
-            move = gameState.history[-i-1]
-            played[i%2] -= move
-            x = np.concatenate((dc.handToExpanded(played[i%2]).reshape(75,1),
-                                dc.handToExpanded(played[(i+1)%2]).reshape(75, 1),
-                                dc.handToExpanded(hand).reshape(75, 1),
-                                dc.handToExpanded(move).reshape(75, 1)), axis=0)
-            y = np.array([[1-2*(i%2)], [int(i/2)]])
-            X[i%2].append(x)
-            Y[i%2].append(y)
-            hands[i%2] += move
-    return X_A, X_B, Y_A, Y_B
+    def addToBuffer(self, data, num_games):
+        assert(num_games == self.index_every)
+        expanded_states = np.array(list(itertools.chain.from_iterable([d[0] for d in data])))
+        expanded_actions = np.array(list(itertools.chain.from_iterable([d[1] for d in data])))
+        actions = np.array(list(itertools.chain.from_iterable([d[2] for d in data])))
+        step = np.array(list(itertools.chain.from_iterable([d[3] for d in data]))).astype(np.int8)
+        remaining_steps = np.array(list(itertools.chain.from_iterable([d[4] for d in data]))).astype(np.int8)
+        isWinner = np.array(list(itertools.chain.from_iterable([d[5] for d in data]))).astype(np.int8)
+        if len(self.buffer_idx) >= (self.max_eps_in_buffer / self.index_every):
+            self.expanded_states = self.expanded_states[self.buffer_idx[1]:]
+            self.expanded_actions = self.expanded_actions[self.buffer_idx[1]:]
+            self.actions = self.actions[self.buffer_idx[1]:]
+            self.step = self.step[self.buffer_idx[1]:]
+            self.remaining_steps = self.remaining_steps[self.buffer_idx[1]:]
+            self.isWinner = self.isWinner[self.buffer_idx[1]:]
 
-def gameStatesFileToDataFile_1(fname):
-    gameStates = loadObject(fname)
-    X_A, X_B, Y_A, Y_B = gameStatesToLabeledData_1(gameStates)
-    print("conversion done")
+            self.buffer_idx = [idx - self.buffer_idx[1] for idx in self.buffer_idx]
+            self.buffer_idx = self.buffer_idx[1:]
+        self.buffer_idx.append(len(self.expanded_states))
+        self.expanded_states = np.vstack([self.expanded_states, expanded_states])
+        self.expanded_actions = np.vstack([self.expanded_actions, expanded_actions])
+        self.actions = np.vstack([self.actions, actions])
+        self.step = np.concatenate([self.step, step])
+        self.remaining_steps = np.concatenate([self.remaining_steps, remaining_steps])
+        self.isWinner = np.concatenate([self.isWinner, isWinner])
 
-    X_A = np.stack(X_A)
-    X_B = np.stack(X_B)
-    Y_A = np.stack(Y_A)
-    Y_B = np.stack(Y_B)
+    # In an active setting, call this when adding/removing from buffer or else
+    # the indices won't work (games are variable length)
+    def reshuffle(self, shuffle=True):
+        self.sample_order = np.random.permutation(self.expanded_states.shape[0]) \
+            if shuffle else np.arange(self.expanded_states.shape[0])
+        self.sample_ind = 0
 
-    pos = fname.find('.')
-    if pos == -1:
-        outname = fname+".h5"
-    else:
-        outname = fname[:pos]+".h5"
-    f = h5py.File(outname, "w")
+    def checkBuffer(self):
+        self.reshuffle()
+        progbar = tf.keras.utils.Progbar(self.expanded_states.shape[0], 50, 1, 1)
+        for counter, i in enumerate(self.sample_order):
+            hist_ag = np.sum(self.actions[(i - self.step[i] + 1) + (self.step[i] + 1) % 2:i:2])
+            hist_op = np.sum(self.actions[(i-self.step[i]+1)+(self.step[i])%2:i:2])
+            hand_ag = np.sum(dc.expandedToHand(self.expanded_states[i]))
+            hand_op = np.sum(dc.expandedToHand(self.expanded_states[i-1])) if self.step[i] != 1 else 18
+            act_ex_ag = np.sum(dc.expandedToHand(self.expanded_actions[i]))
+            act_ag = np.sum(self.actions[i])
+            if hist_ag + act_ag + hand_ag != 18:
+                print(counter, i, 'Agent with action fail')
+                return counter, i
+            if hist_op + hand_op != 18:
+                print(counter, i, 'Opp fail')
+                return counter, i
+            if hist_ag + act_ex_ag + hand_ag != 18:
+                print(counter, i, 'Agent with expanded fail')
+                return counter, i
+            progbar.update(counter)
 
-    XAset = f.create_dataset("X_A", X_A.shape, compression="gzip")
-    XAset[...] = X_A
-    XBset = f.create_dataset("X_B", X_B.shape, compression="gzip")
-    XBset[...] = X_B
-    YAset = f.create_dataset("Y_A", Y_A.shape, compression="gzip")
-    YAset[...] = Y_A
-    YBset = f.create_dataset("Y_B", Y_B.shape, compression="gzip")
-    YBset[...] = Y_B
-    f.close()
-    print("save done")
+    def getSample(self, sample_size=2048, increment_sample = True, shuffle=True, reOrder=False):
+        if self.sample_order is None or reOrder or self.sample_ind + sample_size > len(self.sample_order):
+            self.reshuffle(shuffle)
+        idx = self.sample_order[self.sample_ind : self.sample_ind + sample_size]
+        history_ag = [self.actions[(i-self.step[i]+1)+(self.step[i]+1)%2:i:2] for i in idx]
+        history_op = [self.actions[(i-self.step[i]+1)+(self.step[i])%2:i:2] for i in idx]
 
-def gameStatesFileToDataFile_1_Dir(dirname):
-    fnames = [x for x in os.listdir(dirname) if x[-4:]=='.pkl']
-    i=1
-    for fname in fnames:
-        gameStatesFileToDataFile_1(os.path.join(dirname,fname))
-        print("%d of %d done"%(i, len(fnames)))
+        sample = (self.expanded_states[idx],
+                  self.expanded_actions[idx],
+                  self.actions[idx],
+                  history_ag,
+                  history_op,
+                  self.remaining_steps[idx],
+                  self.isWinner[idx])
+        if increment_sample:
+            self.sample_ind += sample_size
+        return sample, self.sample_ind, len(self.sample_order)
 
-def dataFileToLabeledData_1(fname):
-    f = h5py.File(fname, 'r')
-    X_A = f["X_A"][...]
-    X_B = f["X_B"][...]
-    Y_A = f["Y_A"][...]
-    Y_B = f["Y_B"][...]
-    f.close()
-    if len(X_A.shape) == 2:
-        return X_A, X_B, Y_A, Y_B
-    else:
-        return X_A[:,:,0].T, X_B[:,:,0].T, Y_A[:,:,0].T, Y_B[:,:,0].T
 
-def convertY(Y, discount):
-    Y_ = (Y[0]*discount**Y[1]).reshape(1,-1)
-    return (Y_[0] + 1)/2
+    def saveToFile(self):
+        f = h5py.File(self.fileName, 'w')
+        ES_dset = f.create_dataset('expanded_states', self.expanded_states.shape, dtype=self.expanded_states.dtype)
+        ES_dset[...] = self.expanded_states
+        EA_dset = f.create_dataset('expanded_actions', self.expanded_actions.shape, dtype=self.expanded_actions.dtype)
+        EA_dset[...] = self.expanded_actions
+        A_dset = f.create_dataset('actions', self.actions.shape, dtype=self.actions.dtype)
+        A_dset[...] = self.actions
+        St_dset = f.create_dataset('step', self.step.shape, dtype=self.step.dtype)
+        St_dset[...] = self.step
+        RS_dset = f.create_dataset('remaining_steps', self.remaining_steps.shape, dtype=self.remaining_steps.dtype)
+        RS_dset[...] = self.remaining_steps
+        iW_dset = f.create_dataset('isWinner', self.isWinner.shape, dtype=self.isWinner.dtype)
+        iW_dset[...] = self.isWinner
+        f.close()
+
+    def loadFromFile(self):
+        f = h5py.File(self.fileName, 'r')
+        self.expanded_states = f["expanded_states"][:]
+        self.expanded_actions = f["expanded_actions"][:]
+        self.actions = f["actions"][:]
+        self.step = f["step"][:]
+        self.remaining_steps = f["remaining_steps"][:]
+        self.isWinner = f["isWinner"][:]
+

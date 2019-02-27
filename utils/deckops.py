@@ -5,16 +5,16 @@ import random
 '''
     GLOBALS
 '''
-deck = np.array([i/4+(i==53) for i in range(54)]).astype(np.int64)
+deck = np.array([i/4+(i==53) for i in range(54)]).astype(np.int8)
 handStringArr = [' 3', ' 4', ' 5', ' 6', ' 7', ' 8', ' 9', '10', ' J', ' Q', ' K', ' A', ' 2', 'JB', 'JR']
 handString = ' 3| 4| 5| 6| 7| 8| 9|10| J| Q| K| A| 2|JB|JR'
 
 OpeningMovesSaveFileName = os.path.join(os.path.dirname(__file__), "openingMoves.npz")
 f = open(OpeningMovesSaveFileName, 'rb')
-OpM = np.load(f)
+OpM = np.load(f).astype(np.int8)
 f.close()
 
-emptyMove = np.zeros((1,15)).astype(np.int64)
+emptyMove = np.zeros((1,15)).astype(np.int8)
 
 
 """
@@ -38,28 +38,36 @@ def stringHand(hand):
 d = np.random.permutation(deck)
 
 def cardsToHand(cards):
-    return np.bincount(cards, minlength=15).reshape(1,15)
+    return np.bincount(cards, minlength=15).reshape(1,15).astype(np.int8)
 
 def handToCards(hand):
-    return np.array(sum([[i]*hand[0,i] for i in range(15)], []))
+    return np.array(sum([[i]*hand[0,i] for i in range(15)], [])).astype(np.int8)
 
 # ~ 3.3 microsecs
 def expandedToHand(expanded):
-    return np.dot([[4,3,2,1,0]], expanded)
+    return np.dot([[4,3,2,1,0]], expanded).astype(np.int8)
 
 def handToExpanded(hand):
-    return np.unpackbits(2**hand.astype(np.uint8), axis=0)[3:].astype(np.int64)
+    ex = np.zeros((5, 15)).astype(np.uint8)
+    ex[(4-hand).astype(np.int), np.arange(15)] = 1
+    return ex
+
+def handToExpandedBatch(hand):
+    ex = np.zeros((hand.shape[0], 5, 15))
+    it = np.arange(15*hand.shape[0])
+    ex[(it/15).astype(np.int), ((4-hand).reshape(-1)).astype(np.int), it%15] = 1
+    return ex
 
 
 
 
 # ~ 150 microsecs [only tested on 1 hand]
-Bombs = 4*np.eye(15)[:13].astype(np.int64)
+Bombs = 4*np.eye(15)[:13].astype(np.int8)
 def listLegalCounters(hand, move):
     legalMoves = [emptyMove]
     highCard = np.nonzero(move)[1][-1]
     possibleMoves = [np.roll(move, i) for i in range(1, 15-highCard)]
-    legalMoves += [move for move in possibleMoves if (hand >= move).all()]
+    legalMoves += [move.astype(np.int8) for move in possibleMoves if (hand >= move).all()]
     # If the move is NOT a bomb, then any bombs can beat it
     if not (Bombs-move).any(axis=1).all():
         legalMoves += list(Bombs[np.all(hand >= Bombs, axis=1)].reshape(-1, 1, 15))
@@ -77,5 +85,5 @@ def getMoves(hand, move=np.zeros((1,15))):
 
 def getMovesFromGameState(g):
     if len(g.history) == 0:
-        return getMoves(g.A_Hand)
-    return getMoves(g.A_Hand if (len(g.history) % 2 == 0) else g.B_Hand, g.history[-1])
+        return getMoves(g.A_Hand if g.turn else g.B_Hand)
+    return getMoves(g.A_Hand if g.turn else g.B_Hand, g.history[-1][0])

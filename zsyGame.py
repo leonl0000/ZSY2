@@ -10,7 +10,8 @@ from utils.data import *
 import h5py
 import os
 from agents.staticAgents import RandomAgent, GreedyAgent, HumanAgent
-from agents.dQAgent import *
+from agents.dQAgent_old import *
+from progbar import ProgBar
 
 randomAgent = RandomAgent()
 greedyAgent = GreedyAgent()
@@ -19,12 +20,15 @@ humanAgent = HumanAgent()
 # contains all info about a game at a point
 # can be printed
 class GameState:
-    def __init__(self, A_Name, B_Name, A_Hand, B_hand, history):
+    def __init__(self, A_Name, B_Name, A_Hand, B_hand, history, end, ind, turn):
         self.A_Name = A_Name
         self.B_Name = B_Name
         self.A_Hand = A_Hand
         self.B_Hand = B_hand
         self.history = history #list of moves
+        self.end = end
+        self.ind = ind
+        self.turn = turn
 
     def __str__(self):
         s = ""
@@ -38,16 +42,19 @@ class GameState:
         else:
             s += "%s====\n%s%s%s\n" % (" "*14*(len(self.history)%2==0), self.A_Name[:4], " "*10, self.B_Name[:4])
             for i in range(15):
-                st = dc.handStringArr[i]+"|"+str(self.history[-1][0, i]) if self.history[-1][0, i] != 0 else "    "
+                st = dc.handStringArr[i]+"|"+str(self.history[-1][0][0, i]) if self.history[-1][0][0, i] != 0 else "    "
                 s += "%s|%s   %s   %s|%s\n" % (dc.handStringArr[i],
                                                str(self.A_Hand[0,i]) if self.A_Hand[0,i]!= 0 else " ", st,
                                                dc.handStringArr[i],
                                                str(self.B_Hand[0,i]) if self.B_Hand[0,i]!= 0 else " ")
         return s
 
+    def getExpandedHand(self):
+        return dc.handToExpanded(self.A_Hand) if self.turn == 0 else dc.handToExpanded(self.B_Hand)
 
-# ~ 13.4 ms
-# A always goes first, but with a 50% chance will take an empty move
+
+
+# ~ 6 ms for static agents
 # Returns list of gameStates and whether or not A won
 def game(agentA = randomAgent, agentB = randomAgent, verbose = 0):
     d = np.random.permutation(dc.deck)
@@ -55,34 +62,114 @@ def game(agentA = randomAgent, agentB = randomAgent, verbose = 0):
     B = dc.cardsToHand(d[18:36])
     gameStates = []
     history = []
-    gameStates.append(GameState(agentA.name, agentB.name, A, B, history))
+
+    agents = [agentA, agentB]
+    hands = [A, B]
+
+    turn = 1 if random.random() > .5 else 0
+    gameStates.append(GameState(agentA.name, agentB.name, A, B, history, False, 0, 1-turn))
     if verbose:
         print(gameStates[-1])
-
-    # First move is A's, but A will 50% of the time pass [that is, play emptyMove]
-    #   to simulate randomly choosing a first player
-    if random.random() > 0.5:
-        history.append(agentA.getMove(gameStates[-1]))
-    else:
-        history.append(dc.emptyMove)
-    A -= history[-1]
-    gameStates.append(GameState(agentA.name, agentB.name, A, B, history))
-    if verbose:
-        print(gameStates[-1])
-
-    i = 0
-    while np.sum(A) > 0 and np.sum(B) > 0:
-        if i%2 == 0:
-            history.append(agentB.getMove(gameStates[-1]))
-            B -= history[-1]
-        else:
-            history.append(agentA.getMove(gameStates[-1]))
-            A -= history[-1]
-        i += 1
-        gameStates.append(GameState(agentA.name, agentB.name, A, B, history))
+    i = 1
+    while True:
+        history.append((agents[turn].getMove(gameStates[-1]), turn))
+        hands[turn] -= history[-1][0]
+        done = not np.any(hands[turn])
+        gameStates.append(GameState(agentA.name, agentB.name, A, B, history, done, i, turn))
+        if done:
+            break
+        turn = 1 - turn
         if verbose:
             print(gameStates[-1])
-    return gameStates, np.sum(A)<np.sum(B)
+        i += 1
+    return gameStates, 1-turn
+
+def gameStatesToData(endgame):
+    gameStates, A_won = endgame
+    gs = gameStates[-1]
+    expanded_states = [None] * gs.ind
+    expanded_actions = [None] * gs.ind
+    actions = [None] * gs.ind
+    step = list(range(1, gs.ind+1))
+    remaining_steps = list(range(gs.ind-1, -1, -1))
+    isWinner = ([1] if gs.ind%2 == 1 else []) + [0,1] * int(gs.ind/2)
+    winner_hand = np.zeros((1, 15)).astype(np.int8)
+    loser_hand = np.zeros((1, 15)).astype(np.int8) + (gameStates[-2].B_Hand if A_won else gameStates[-2].A_Hand)
+
+    expanded_states[-1] = dc.handToExpanded(winner_hand)
+    winner_action = gs.history[-1][0]
+    expanded_actions[-1] = dc.handToExpanded(winner_action)
+    actions[-1] = winner_action
+    winner_hand += winner_action
+    for i in range(2, gs.ind, 2):
+        loser_action = gs.history[-i][0]
+        expanded_states[-i] = dc.handToExpanded(loser_hand)
+        expanded_actions[-i] = dc.handToExpanded(loser_action)
+        actions[-i] = loser_action
+        loser_hand += loser_action
+
+        winner_action = gs.history[-i - 1][0]
+        expanded_states[-i-1] = dc.handToExpanded(winner_hand)
+        expanded_actions[-i-1] = dc.handToExpanded(winner_action)
+        actions[-i-1] = winner_action
+        winner_hand += winner_action
+    if expanded_states[0] is None:
+        loser_action = gs.history[0][0]
+        expanded_states[0] = dc.handToExpanded(loser_hand)
+        expanded_actions[0] = dc.handToExpanded(loser_action)
+        actions[0] = loser_action
+        loser_hand += loser_action
+    assert(np.sum(winner_hand) == 18 and np.sum(loser_hand) == 18)
+    return expanded_states, expanded_actions, actions, step, remaining_steps, isWinner
+
+import itertools
+# Only use multiprocessing pool if DQA is not imported
+# Switch between the 2 ways to run games commented below
+# from multiprocessing import Pool
+def runXGamesAndSaveData(X, buffer=Buffer()):
+    num_batches = int(X/buffer.index_every)
+    bar = ProgBar("Games", 50)
+    bar.start()
+    p = Pool(10)
+    for i in range(num_batches):
+        bar.percent = int(i*100/num_batches)
+        # endgames = p.map(game, [randomAgent] * buffer.index_every)
+        endgames = [game() for j in range(buffer.index_every)]
+        # data = p.map(gameStatesToData, endgames)
+        data = [gameStatesToData(endgame) for endgame in endgames]
+        buffer.addToBuffer(data, buffer.index_every)
+    bar.stop()
+    bar.join()
+    return buffer
+
+
+# TODO: Multi game not yet implemented!!!
+def _flattenSAGenerator(gmoves):
+    return flattenSAGenerator(gmoves[0], gmoves[1])
+
+from multiprocessing import Pool
+def multiGame(agentA, agentB, num_games=100):
+    p = Pool(5)
+    Decks = p.map(np.random.permutation, [dc.deck]*num_games)
+    A_ind = int(num_games/2)
+    A_hands = p.map(dc.cardsToHand, [Decks[i][:18] for i in range(num_games)])
+    B_hands = p.map(dc.cardsToHand, [Decks[i][:18] for i in range(num_games)])
+    historys = [[]] * num_games
+    gameStates = [[GameState(agentA.name, agentB.name, A_hands[i], B_hands[i], historys[i], False, 0, 1 if i < A_ind else 0)] for i in range(num_games)]
+    turns = [0] * A_ind + [1] * (A_ind + num_games % 2)
+    movesA = p.map(dc.getOpeningMoves, A_hands[:A_ind])
+    movesB = p.map(dc.getOpeningMoves, B_hands[A_ind:])
+    moves = movesA + movesB
+    flattenedSA_A = p.map(_flattenSAGenerator, [(gameStates[i][-1], movesA[i]) for i in range(len(movesA))])
+    flattenedSA_B = p.map(_flattenSAGenerator, [(gameStates[i][-1], movesB[i]) for i in range(len(movesA))])
+    flattenedSA_A = np.concatenate(flattenedSA_A, axis=1)
+    p.close()
+    p.join()
+    # print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n' + str(flattenedSA_A.shape) + '\n\n\n\n\n\n\n\n\n\n')
+    scores = agentA.predictor.predict(flattenedSA_A)
+    return scores
+
+
 
 def stdTest(paramFileName, numGames = 10000):
     dQP = dQParameterSetInstance(paramFileName, globalSess)
@@ -93,19 +180,6 @@ def stdTest(paramFileName, numGames = 10000):
     metric = (1-1.*vg/numGames) * (1-1.*vr/numGames) * 10000
     print("Standard metric: %.2f"%metric)
 
-# def runXGamesRetFinals(paramFileName, numGames = 20000, exploration_prob=0.1):
-#     dQP = dQParameterSetInstance(paramFileName, globalSess)
-#     dQA = DeepQAgent(predictor=dQP, exploration_prob=exploration_prob)
-#     print("Simulating...")
-#     finalGameStates = [game(dQA, dQA)[0][-1] for _ in range(numGames)]
-#     print("Converting...")
-#     X_A, X_B, Y_A, Y_B = gameStatesToLabeledData_1(finalGameStates)
-#     print("Stacking...")
-#     X_A = np.stack(X_A)
-#     X_B = np.stack(X_B)
-#     Y_A = np.stack(Y_A)
-#     Y_B = np.stack(Y_B)
-#     return X_A, X_B, Y_A, Y_B
 
 def runXGamesDeepQ(paramFileName, saveFileName, numGames = 20000, exploration_prob=0.1):
     dQP = dQParameterSetInstance(paramFileName, globalSess)
@@ -154,101 +228,3 @@ def saveGameStates(gameStates, fname):
 def loadGameStates(fname):
     f = open(fname, 'rb')
     return pickle.load(f)
-
-
-
-
-
-"""
-Take a list of the final game states, turns into labeled data
-
-Each game has a history of moves. Each game will produce a set of datapoints as long
-    as the history. Each point in the history will become an (s,a) pair, where s
-    is the sum of the history up to that point for the player in question, sum for the
-    opponent, and the hand they have after the move they take, and a is the move they take.
-
-Each of these 4 things can be represented by a hand. With the expanded hand representation
-    each hand will be a (5,15) array with exactly 15 coordinates being 1 and the rest being
-    0. These will be flattenned and concatenated into a (300,1) matrix.
-
-Y will be a (2,1) matrix. The first coordinate represents if that player won in the end, the
-    second represents how many moves away the end is. The first will be the actual label,
-    the second will be used later if I want to add a gamma.
-"""
-def gameStatesToLabeledData_1(finalGameStates):
-    X_A = []
-    X_B = []
-    Y_A = []
-    Y_B = []
-    for gameState in finalGameStates:
-        A_Hand = gameState.A_Hand
-        B_Hand = gameState.B_Hand
-        if len(gameState.history)%2 == 1:
-            hands = [A_Hand, B_Hand]
-            X = [X_A, X_B]
-            Y = [Y_A, Y_B]
-        else:
-            hands = [B_Hand, A_Hand]
-            X = [X_B, X_A]
-            Y = [Y_B, Y_A]
-
-        played = [np.sum(gameState.history[-1::-2], axis=0),
-                  np.sum(gameState.history[-2::-2], axis=0)]
-
-        for i in range(0, len(gameState.history)):
-            hand = hands[i%2]
-            move = gameState.history[-i-1]
-            played[i%2] -= move
-            x = np.concatenate((dc.handToExpanded(played[i%2]).reshape(75,1),
-                                dc.handToExpanded(played[(i+1)%2]).reshape(75, 1),
-                                dc.handToExpanded(hand).reshape(75, 1),
-                                dc.handToExpanded(move).reshape(75, 1)), axis=0)
-            y = np.array([[1-2*(i%2)], [int(i/2)]])
-            X[i%2].append(x)
-            Y[i%2].append(y)
-            hands[i%2] += move
-    return X_A, X_B, Y_A, Y_B
-
-def gameStatesFileToDataFile_1(fname):
-    gameStates = loadGameStates(fname)
-    X_A, X_B, Y_A, Y_B = gameStatesToLabeledData_1(gameStates)
-    print("conversion done")
-
-    X_A = np.stack(X_A)
-    X_B = np.stack(X_B)
-    Y_A = np.stack(Y_A)
-    Y_B = np.stack(Y_B)
-
-    pos = fname.find('.')
-    if pos == -1:
-        outname = fname+".h5"
-    else:
-        outname = fname[:pos]+".h5"
-    f = h5py.File(outname, "w")
-
-    XAset = f.create_dataset("X_A", X_A.shape, compression="gzip")
-    XAset[...] = X_A
-    XBset = f.create_dataset("X_B", X_B.shape, compression="gzip")
-    XBset[...] = X_B
-    YAset = f.create_dataset("Y_A", Y_A.shape, compression="gzip")
-    YAset[...] = Y_A
-    YBset = f.create_dataset("Y_B", Y_B.shape, compression="gzip")
-    YBset[...] = Y_B
-    f.close()
-    print("save done")
-
-def gameStatesFileToDataFile_1_Dir(dirname):
-    fnames = [x for x in os.listdir(dirname) if x[-4:]=='.pkl']
-    i=1
-    for fname in fnames:
-        gameStatesFileToDataFile_1(os.path.join(dirname,fname))
-        print("%d of %d done"%(i, len(fnames)))
-
-def dataFileToLabeledData_1(fname):
-    f = h5py.File(fname, 'r')
-    X_A = f["X_A"][...]
-    X_B = f["X_B"][...]
-    Y_A = f["Y_A"][...]
-    Y_B = f["Y_B"][...]
-    f.close()
-    return X_A[:,:,0].T, X_B[:,:,0].T, Y_A[:,:,0].T, Y_B[:,:,0].T

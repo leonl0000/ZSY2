@@ -1,0 +1,17 @@
+import os
+modelFnames = [os.path.join('Models', f) for f in os.listdir('Models')]
+models = [zsy.getDQA(f) for f in modelFnames]
+gs = [[zsy.game(ag, zsy.greedyAgent) for i in range(100)] for ag in models]
+gss = [np.sum([g[1] for g in _g]) for _g in gs]
+
+import zsyGame as zsy
+import os
+modelFnames = [os.path.join('Models', f) for f in os.listdir('Models')]
+models = [zsy.getDQA(f) for f in modelFnames]
+ret = zsy.multiGame(models[2], models[-2], 1000)
+
+import zsyGame as zsy
+gamestates, A_won = zsy.game(zsy.randomAgent, zsy.greedyAgent)
+g_data = [(gamestates[0].getExpandedHand, None, None, gamestates[0].turn, 0, len(gamestates))]
+hist = gamestates[-1].history
+

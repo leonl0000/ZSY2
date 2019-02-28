@@ -10,7 +10,7 @@ from utils.data import *
 import h5py
 import os
 from agents.staticAgents import RandomAgent, GreedyAgent, HumanAgent
-from agents.dQAgent_old import *
+# from agents.dQAgent_old import *
 from progbar import ProgBar
 
 randomAgent = RandomAgent()
@@ -125,12 +125,12 @@ def gameStatesToData(endgame):
 import itertools
 # Only use multiprocessing pool if DQA is not imported
 # Switch between the 2 ways to run games commented below
-# from multiprocessing import Pool
+from multiprocessing import Pool
 def runXGamesAndSaveData(X, buffer=Buffer()):
     num_batches = int(X/buffer.index_every)
     bar = ProgBar("Games", 50)
     bar.start()
-    p = Pool(10)
+    # p = Pool(3)
     for i in range(num_batches):
         bar.percent = int(i*100/num_batches)
         # endgames = p.map(game, [randomAgent] * buffer.index_every)
@@ -142,89 +142,42 @@ def runXGamesAndSaveData(X, buffer=Buffer()):
     bar.join()
     return buffer
 
+def stepGame(turn_start, names):
+    d = np.random.permutation(dc.deck)
+    A = dc.cardsToHand(d[:18])
+    B = dc.cardsToHand(d[18:36])
+    history = []
+    gameStates = [GameState(names[0], names[1], A, B, history, False, 0, 1-turn_start)]
+    moves = dc.getOpeningMoves(A)
+    return [A, B], names, moves, history, gameStates, turn_start
 
-# TODO: Multi game not yet implemented!!!
-def _flattenSAGenerator(gmoves):
-    return flattenSAGenerator(gmoves[0], gmoves[1])
+def takeMove(stepGame, move, i):
+    hands, names, moves, history, gameStates, turn = stepGame
+    history.append((move, turn))
+    hands[turn] -= move
+    gameStates.append(GameState(names[0], names[1], hands[0], hands[1], history, not np.any(hands[turn]), i, turn))
+    moves = dc.listLegalCounters(hands[1-turn], move)
+    return hands, names, moves, history, gameStates, 1-turn
 
-from multiprocessing import Pool
-def multiGame(agentA, agentB, num_games=100):
-    p = Pool(5)
-    Decks = p.map(np.random.permutation, [dc.deck]*num_games)
-    A_ind = int(num_games/2)
-    A_hands = p.map(dc.cardsToHand, [Decks[i][:18] for i in range(num_games)])
-    B_hands = p.map(dc.cardsToHand, [Decks[i][:18] for i in range(num_games)])
-    historys = [[]] * num_games
-    gameStates = [[GameState(agentA.name, agentB.name, A_hands[i], B_hands[i], historys[i], False, 0, 1 if i < A_ind else 0)] for i in range(num_games)]
-    turns = [0] * A_ind + [1] * (A_ind + num_games % 2)
-    movesA = p.map(dc.getOpeningMoves, A_hands[:A_ind])
-    movesB = p.map(dc.getOpeningMoves, B_hands[A_ind:])
-    moves = movesA + movesB
-    flattenedSA_A = p.map(_flattenSAGenerator, [(gameStates[i][-1], movesA[i]) for i in range(len(movesA))])
-    flattenedSA_B = p.map(_flattenSAGenerator, [(gameStates[i][-1], movesB[i]) for i in range(len(movesA))])
-    flattenedSA_A = np.concatenate(flattenedSA_A, axis=1)
-    p.close()
-    p.join()
-    # print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n' + str(flattenedSA_A.shape) + '\n\n\n\n\n\n\n\n\n\n')
-    scores = agentA.predictor.predict(flattenedSA_A)
-    return scores
+def multiGame(agentA, agentB, num_games=100, turn_start=0):
+    names = [agentA.name, agentB.name]
+    agents = [agentA, agentB]
+    SA_functions = [agentA.getFunction_SAFromGameState(), agentB.getFunction_SAFromGameState()]
+    stepGames = [stepGame(turn_start, names) for _ in range(num_games)]
+    turn = turn_start
+    endGames = []
+    while len(stepGames) > 0:
+        sa = [SA_functions[turn](sg[3], sg[sg[-1]], sg[2]) for sg in stepGames]
+        saBInds = [0] * (len(sa)+1)
+        for i in range(1, len(sa)+1):
+            saBInds[i] = saBInds[i-1] + sa[i-1].shape[0]
+        sa = np.concatenate(sa, axis=0)
+        scores = agents[turn].sess.run(agents[turn].out, feed_dict={agents[turn].sa: sa})
+        for i in range(len(saBInds)-1):
+            if random.random() < agentB.exploration_prob:
+                move = random.choice(stepGames[i][2])
+            else:
+                move = stepGames[i][2][np.argmax(scores[saBInds[i]:saBInds[i+1]])]
+            stepGames[i] = takeMove(stepGames[i], move)
 
-
-
-def stdTest(paramFileName, numGames = 10000):
-    dQP = dQParameterSetInstance(paramFileName, globalSess)
-    dQA = DeepQAgent(predictor = dQP, exploration_prob=0)
-    vg = np.sum([game(dQA, greedyAgent)[1] for _ in range(numGames)])
-    vr = np.sum([game(dQA, randomAgent)[1] for _ in range(numGames)])
-    print("VS Greedy: %.3f%%\tVS Random: %.3f%%"%(100.*vg/numGames, 100.*vr/numGames))
-    metric = (1-1.*vg/numGames) * (1-1.*vr/numGames) * 10000
-    print("Standard metric: %.2f"%metric)
-
-
-def runXGamesDeepQ(paramFileName, saveFileName, numGames = 20000, exploration_prob=0.1):
-    dQP = dQParameterSetInstance(paramFileName, globalSess)
-    dQA = DeepQAgent(predictor = dQP, exploration_prob=exploration_prob)
-    print("Simulating...")
-    finalGameStates = [game(dQA, dQA)[0][-1] for _ in range(numGames)]
-    print("Converting...")
-    X_A, X_B, Y_A, Y_B = gameStatesToLabeledData_1(finalGameStates)
-    print("Saving...")
-    X_A = np.stack(X_A)
-    X_B = np.stack(X_B)
-    Y_A = np.stack(Y_A)
-    Y_B = np.stack(Y_B)
-    f = h5py.File(saveFileName, "w")
-    XAset = f.create_dataset("X_A", X_A.shape, compression="gzip")
-    XAset[...] = X_A
-    XBset = f.create_dataset("X_B", X_B.shape, compression="gzip")
-    XBset[...] = X_B
-    YAset = f.create_dataset("Y_A", Y_A.shape, compression="gzip")
-    YAset[...] = Y_A
-    YBset = f.create_dataset("Y_B", Y_B.shape, compression="gzip")
-    YBset[...] = Y_B
-    f.close()
-    print("done.")
-
-def runXGamesSaveLastGameStates(fname, x=10000, agentA = randomAgent, agentB = randomAgent):
-    finalGameStates = []
-    timesAWon = 0
-    for i in range(x):
-        gs = game(agentA, agentB, 0)
-        finalGameStates.append(gs[0][-1])
-        timesAWon += gs[1]
-    print("A won %f"%(1.*timesAWon/x))
-    saveGameStates(finalGameStates, fname)
-
-def oneMillionGames():
-    for i in range(10):
-        fname = "T100k_%d.pkl"%(i)
-        runXGamesSaveLastGameStates(fname, 100000)
-
-def saveGameStates(gameStates, fname):
-    f = open(fname, 'wb+')
-    pickle.dump(gameStates, f)
-    f.close()
-
-def loadGameStates(fname):
-    f = open(fname, 'rb')
-    return pickle.load(f)
+    return stepGames, moves

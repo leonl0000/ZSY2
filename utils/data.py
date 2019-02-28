@@ -25,6 +25,7 @@ def loadObject(fname):
     return pickle.load(f)
 
 
+buffer_uneven_message = "Uneven amount of games. Provided %d games, but buffer only stores chunks of %d games. Last %d games discarded"
 class Buffer:
     def __init__(self, fileName="buffer.h5", max_eps_in_buffer=1000000, index_every = 1000):
         self.fileName = fileName
@@ -38,17 +39,18 @@ class Buffer:
             self.step = np.zeros((0)).astype(np.int8)
             self.remaining_steps = np.zeros((0)).astype(np.int8)
             self.isWinner = np.zeros((0)).astype(np.int8)
-
-            self.max_eps_in_buffer = max_eps_in_buffer
             self.buffer_idx = []
-            self.index_every = index_every
         else:
             self.loadFromFile()
+            self.max_eps_in_buffer = max_eps_in_buffer
+            self.index_every = index_every
 
     # NOTE: Ensure all data is int8 or uint8, or else numpy concats will be VERY slow
 
     def addToBuffer(self, data, num_games):
         assert(num_games == self.index_every)
+        if len(data) % self.index_every != 0:
+            print(buffer_uneven_message % (len(data), self.index_every, len(data) % self.index_every))
         expanded_states = np.array(list(itertools.chain.from_iterable([d[0] for d in data])))
         expanded_actions = np.array(list(itertools.chain.from_iterable([d[1] for d in data])))
         actions = np.array(list(itertools.chain.from_iterable([d[2] for d in data])))

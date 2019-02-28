@@ -66,7 +66,7 @@ class dQParameterSetInstance:
         return self.sess.run(self.params['A'+str(self.n_layers)], feed_dict = {self.params['X']: x})
 
 
-def getDQA(paramFilename, exploration_prob=0):
+def getDQA(paramFilename=os.path.join('agents', 'params_dQAgent_old.pkl'), exploration_prob=0):
     dQP = dQParameterSetInstance(paramFilename, globalSess)
     return DeepQAgent(exploration_prob=exploration_prob, predictor=dQP)
 

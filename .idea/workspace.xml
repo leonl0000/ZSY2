@@ -2,12 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3e737cc1-bd5f-465c-beaf-b4d49309b171" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agents/dQAgent (Old, redo).py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agents/staticAgents.py" beforeDir="false" afterPath="$PROJECT_DIR$/agents/staticAgents.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/BasicDenseNet/BasicDenseNet-0.data-00000-of-00001" beforeDir="false" afterPath="$PROJECT_DIR$/Models/BasicDenseNet/BasicDenseNet-0.data-00000-of-00001" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/BasicDenseNet/BasicDenseNet-0.index" beforeDir="false" afterPath="$PROJECT_DIR$/Models/BasicDenseNet/BasicDenseNet-0.index" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/BasicDenseNet/BasicDenseNet-0.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Models/BasicDenseNet/BasicDenseNet-0.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/BasicDenseNet/BasicDenseNet-1.data-00000-of-00001" beforeDir="false" afterPath="$PROJECT_DIR$/Models/BasicDenseNet/BasicDenseNet-1.data-00000-of-00001" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/BasicDenseNet/BasicDenseNet-1.index" beforeDir="false" afterPath="$PROJECT_DIR$/Models/BasicDenseNet/BasicDenseNet-1.index" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/BasicDenseNet/BasicDenseNet-1.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Models/BasicDenseNet/BasicDenseNet-1.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/BasicDenseNet/BasicDenseNet-2.data-00000-of-00001" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/BasicDenseNet/BasicDenseNet-2.index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/BasicDenseNet/BasicDenseNet-2.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/BasicDenseNet/checkpoint" beforeDir="false" afterPath="$PROJECT_DIR$/Models/BasicDenseNet/checkpoint" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/ConvNetAgent/ConvNetAgent-0.data-00000-of-00001" beforeDir="false" afterPath="$PROJECT_DIR$/Models/ConvNetAgent/ConvNetAgent-0.data-00000-of-00001" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/ConvNetAgent/ConvNetAgent-0.index" beforeDir="false" afterPath="$PROJECT_DIR$/Models/ConvNetAgent/ConvNetAgent-0.index" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/ConvNetAgent/ConvNetAgent-0.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Models/ConvNetAgent/ConvNetAgent-0.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/ConvNetAgent/checkpoint" beforeDir="false" afterPath="$PROJECT_DIR$/Models/ConvNetAgent/checkpoint" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agents/dQAgent_old.py" beforeDir="false" afterPath="$PROJECT_DIR$/agents/dQAgent_old.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/data.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/deckops.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/deckops.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/misc.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/misc.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/zsyGame.py" beforeDir="false" afterPath="$PROJECT_DIR$/zsyGame.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -49,22 +60,37 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/zsyGame.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3816">
-              <caret line="229" column="25" selection-start-line="229" selection-start-column="25" selection-end-line="229" selection-end-column="25" />
+            <state relative-caret-position="305">
+              <caret line="138" column="32" selection-start-line="138" selection-start-column="16" selection-end-line="138" selection-end-column="32" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
+                <element signature="e#3079#4719#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/utils/data.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="17" column="14" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="14" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+                <element signature="e#3525#4604#0" />
+                <element signature="e#4711#5515#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utils/data.py">
+        <entry file="file://$PROJECT_DIR$/utils/misc.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-867">
-              <caret line="12" column="23" lean-forward="true" selection-start-line="12" selection-start-column="23" selection-end-line="12" selection-end-column="23" />
+            <state relative-caret-position="527">
+              <caret line="31" column="15" selection-start-line="31" selection-start-column="15" selection-end-line="31" selection-end-column="15" />
               <folding>
-                <element signature="e#0#18#0" expanded="true" />
+                <element signature="e#0#11#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -73,8 +99,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/agents/newTestAgent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="731">
-              <caret line="142" column="39" selection-start-line="142" selection-start-column="39" selection-end-line="142" selection-end-column="39" />
+            <state relative-caret-position="340">
+              <caret line="80" column="30" selection-start-line="80" selection-start-column="30" selection-end-line="80" selection-end-column="65" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -86,7 +112,7 @@
         <entry file="file://$PROJECT_DIR$/agents/ConvNetAgent.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="153">
-              <caret line="9" column="34" lean-forward="true" selection-start-line="9" selection-start-column="34" selection-end-line="9" selection-end-column="34" />
+              <caret line="9" column="34" selection-start-line="9" selection-start-column="34" selection-end-line="9" selection-end-column="34" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -94,11 +120,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/agents/utils/SAConverters.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
+            <state relative-caret-position="612">
+              <caret line="54" column="37" selection-start-line="54" selection-start-column="37" selection-end-line="54" selection-end-column="37" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -109,7 +135,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utils/deckops.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
+            <state relative-caret-position="153">
               <caret line="54" column="23" selection-start-line="54" selection-start-column="4" selection-end-line="54" selection-end-column="23" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
@@ -127,12 +153,15 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/utils/misc.py" />
-        <option value="$PROJECT_DIR$/zsyGame.py" />
         <option value="$PROJECT_DIR$/agents/cnnAgent.py" />
         <option value="$PROJECT_DIR$/agents/newTestAgent.py" />
         <option value="$PROJECT_DIR$/agents/ConvNetAgent.py" />
         <option value="$PROJECT_DIR$/utils/deckops.py" />
         <option value="$PROJECT_DIR$/agents/utils/SAConverters.py" />
+        <option value="$PROJECT_DIR$/../../staticAgents.py" />
+        <option value="$PROJECT_DIR$/agents/dQAgent_old.py" />
+        <option value="$PROJECT_DIR$/zsyGame.py" />
+        <option value="$PROJECT_DIR$/utils/data.py" />
       </list>
     </option>
   </component>
@@ -255,16 +284,6 @@
     </layout>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/utils/misc.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="481">
-          <caret line="31" column="15" selection-start-line="31" selection-start-column="15" selection-end-line="31" selection-end-column="15" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/agents/newTestAgent - Copy.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
@@ -292,37 +311,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Dropbox (Personal)/Leon Lin/work misc/HK2/assignment2/q2_linear.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="867">
-          <caret line="121" column="33" selection-start-line="121" selection-start-column="33" selection-end-line="121" selection-end-column="33" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/../../staticAgents.py">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/zsyGame.py">
+    <entry file="file://$PROJECT_DIR$/agents/dQAgent_old.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3816">
-          <caret line="229" column="25" selection-start-line="229" selection-start-column="25" selection-end-line="229" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/agents/ConvNetAgent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="34" lean-forward="true" selection-start-line="9" selection-start-column="34" selection-end-line="9" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utils/deckops.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="54" column="23" selection-start-line="54" selection-start-column="4" selection-end-line="54" selection-end-column="23" />
+        <state relative-caret-position="85">
+          <caret line="68" column="93" selection-start-line="68" selection-start-column="93" selection-end-line="68" selection-end-column="93" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
@@ -331,18 +326,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/agents/newTestAgent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="731">
-          <caret line="142" column="39" selection-start-line="142" selection-start-column="39" selection-end-line="142" selection-end-column="39" />
+        <state relative-caret-position="340">
+          <caret line="80" column="30" selection-start-line="80" selection-start-column="30" selection-end-line="80" selection-end-column="65" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils/data.py">
+    <entry file="file://$PROJECT_DIR$/agents/ConvNetAgent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-867">
-          <caret line="12" column="23" lean-forward="true" selection-start-line="12" selection-start-column="23" selection-end-line="12" selection-end-column="23" />
+        <state relative-caret-position="153">
+          <caret line="9" column="34" selection-start-line="9" selection-start-column="34" selection-end-line="9" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/deckops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="54" column="23" selection-start-line="54" selection-start-column="4" selection-end-line="54" selection-end-column="23" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
@@ -351,11 +356,51 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/agents/utils/SAConverters.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
+        <state relative-caret-position="612">
+          <caret line="54" column="37" selection-start-line="54" selection-start-column="37" selection-end-line="54" selection-end-column="37" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zsyGame.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="305">
+          <caret line="138" column="32" selection-start-line="138" selection-start-column="16" selection-end-line="138" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#3079#4719#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/misc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="31" column="15" selection-start-line="31" selection-start-column="15" selection-end-line="31" selection-end-column="15" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="14" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#3525#4604#0" />
+            <element signature="e#4711#5515#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Dropbox (Personal)/Leon Lin/work misc/HK2/assignment2/q2_linear.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="867">
+          <caret line="121" column="33" selection-start-line="121" selection-start-column="33" selection-end-line="121" selection-end-column="33" />
         </state>
       </provider>
     </entry>

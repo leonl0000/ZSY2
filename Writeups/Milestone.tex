@@ -1,0 +1,113 @@
+\documentclass{article}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{booktabs} 
+\usepackage{hyperref}
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+\usepackage[accepted]{icml2018}
+\usepackage[UTF8]{ctex}
+\icmltitlerunning{CS234 Milestone: ZSY}
+
+\begin{document}
+
+\twocolumn[
+\icmltitle{CS234 Milestone: ZSY}
+
+\begin{icmlauthorlist}
+\icmlauthor{Leon Lin}{}
+\end{icmlauthorlist}
+
+
+\icmlcorrespondingauthor{Leon Lin}{leonl@stanford.edu}
+
+% You may provide any keywords that you
+% find helpful for describing your paper; these are used to populate
+% the "keywords" metadata in the PDF but will not be shown in the document
+\icmlkeywords{}
+
+\vskip 0.3in
+]
+
+
+\begin{abstract}
+This document provides a basic paper template and submission guidelines.
+Abstracts must be a single paragraph, ideally between 4--6 sentences long.
+Gross violations will trigger corrections at the camera-ready phase.
+\end{abstract}
+
+\section{Introduction}
+争上游 (ZhengShangYou, or “Competition Upstream”) is a Chinese card game that is part strategy, part luck. Each player is dealt about 18 cards; they get rid of cards by matching patterns; the player who gets rid of all their cards first wins. I aim to train a deep learning agent to have an above 50\% win rate against humans in a 2-player version of this game.
+
+There are three main challenges to learning this game. First, it is stochastic with a large state space. With 2 players each being dealt 18 cards, there are about 151 trillion possible initial states1. Second, it’s partially observed. A player can only see their own cards. Third, the test environment (playing against a human) cannot be used to train it because of the volume of data required.
+
+
+
+
+\subsubsection{Camera-Ready Author Information}
+\label{final author}
+
+
+
+\begin{algorithm}[tb]
+   \caption{Bubble Sort}
+\begin{algorithmic}
+   \STATE {\bfseries Input:} data $x_i$, size $m$
+   \REPEAT
+   \STATE Initialize $noChange = true$.
+   \FOR{$i=1$ {\bfseries to} $m-1$}
+   \IF{$x_i > x_{i+1}$}
+   \STATE Swap $x_i$ and $x_{i+1}$
+   \STATE $noChange = false$
+   \ENDIF
+   \ENDFOR
+   \UNTIL{$noChange$ is $true$}
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Tables}
+
+You may also want to include tables that summarize material. Like
+figures, these should be centered, legible, and numbered consecutively.
+However, place the title \emph{above} the table with at least
+0.1~inches of space before the title and the same after it, as in
+Table~\ref{sample-table}. The table title should be set in 9~point
+type and centered unless it runs two or more lines, in which case it
+should be flush left.
+
+% Note use of \abovespace and \belowspace to get reasonable spacing
+% above and below tabular lines.
+
+\begin{table}[t]
+\caption{Classification accuracies for naive Bayes and flexible
+Bayes on various data sets.}
+\label{sample-table}
+\vskip 0.15in
+\begin{center}
+\begin{small}
+\begin{sc}
+\begin{tabular}{lcccr}
+\toprule
+Data set & Naive & Flexible & Better? \\
+\midrule
+Breast    & 95.9$\pm$ 0.2& 96.7$\pm$ 0.2& $\surd$ \\
+Cleveland & 83.3$\pm$ 0.6& 80.0$\pm$ 0.6& $\times$\\
+Glass2    & 61.9$\pm$ 1.4& 83.8$\pm$ 0.7& $\surd$ \\
+Credit    & 74.8$\pm$ 0.5& 78.3$\pm$ 0.6&         \\
+Horse     & 73.3$\pm$ 0.9& 69.7$\pm$ 1.0& $\times$\\
+Meta      & 67.1$\pm$ 0.6& 76.5$\pm$ 0.5& $\surd$ \\
+Pima      & 75.1$\pm$ 0.6& 73.9$\pm$ 0.5&         \\
+Vehicle   & 44.9$\pm$ 0.6& 61.5$\pm$ 0.4& $\surd$ \\
+\bottomrule
+\end{tabular}
+\end{sc}
+\end{small}
+\end{center}
+\vskip -0.1in
+\end{table}
+\section{References}
+Mnih, V., Kavukcuoglu, K., Silver, D., Graves, A., Antonoglou, I., Wierstra, D., \& Riedmiller, M. (2013). Playing Atari with Deep Reinforcement Learning. 
+
+\end{document}
+
+

@@ -24,10 +24,9 @@ def battleRoyal(buffer, agents, sim_winrate_exp, numGames = 50000, multigame_siz
     newWinRatesList = [[] for _ in range(len(agents))]
     newWinRates = [-1] * len(agents)
     num_iters = int(numGames/multigame_size)
-    progbar = tf.keras.utils.Progbar(num_iters, 10, 1, 1, [""])
+    progbar = tf.keras.utils.Progbar(num_iters, 50, 1, 1, [""])
     for i in range(num_iters):
-        winrateString = ' '.join(["%i:%i" % (j, int(100*wr) if wr > 0 else -1) for j, wr in enumerate(newWinRates)])
-        progbar.update(i, [("", winrateString)])
+        progbar.update(i)
 
         inds = np.random.choice(np.arange(len(agents)), 2, p=agent_probs)
         agent1 = agents[inds[0]]

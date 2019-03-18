@@ -1,0 +1,2 @@
+model_checkpoint_path: "OpM.chkp"
+all_model_checkpoint_paths: "OpM.chkp"

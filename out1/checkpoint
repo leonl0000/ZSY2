@@ -1,0 +1,2 @@
+model_checkpoint_path: "DenseNet3.chkp"
+all_model_checkpoint_paths: "DenseNet3.chkp"

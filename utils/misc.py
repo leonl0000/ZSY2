@@ -1,32 +1,50 @@
 import time
 import numpy as np
+import zsyGame as zsy
+import agents.oldDQA
+oldAg = agents.oldDQA.getDQA()
+staticAgents = [zsy.randomAgent, zsy.greedyAgent, oldAg]
+from tensorflow.python.keras.utils import Progbar
 
-def timer(f,args,iters):
-    tic = time.time()
-    for i in range(iters):
-        f(*args)
+def timeUp(tic = None, verbose = True):
     toc = time.time()
-    print("%d ms"%(1000*(toc-tic)))
-    print("%f us/iter"%(1e6*(toc-tic)/iters))
+    if tic is None:
+        return toc
+    deltaT = toc - tic
+    h = int(deltaT)/3600
+    m = int((deltaT%3600)/60)
+    s = deltaT%60
+    if verbose:
+        print("%d:%d:%.4f"%(h,m,s))
+    return toc
 
-def RoundRobin(Ms, matches = 10):
-    numModels = len(Ms)
+
+def testStatic(agent, numGames=100, verbose=2):
+    agent.setTest()
+    tic = timeUp()
+    toc = tic
+    gs = [None] * len(staticAgents)
+    for i, staticAgent in enumerate(staticAgents):
+        gs[i] = zsy.multiGame(agent, staticAgent, numGames, verbose==1)
+        toc = timeUp(toc, verbose==2)
+    agent.setTrain()
+    toc = timeUp(tic, verbose==2)
+    return gs, toc-tic
+
+def RoundRobin(Agents, matches = 10):
+    numModels = len(Agents)
     wins = np.zeros(numModels)
+    totalRounds = numModels*(numModels-1)/2
+    progbar = Progbar(totalRounds, 50)
+    k = 0
+    endGames = []
     for i in range(numModels):
-        if i == 0:
-            tic = time.time()
-        if i == 1:
-            toc = time.time()
-            t = toc-tic
-            t_ = t * (numModels-1.)/2
-            secs = t_%60
-            mins = (t_/60)%60
-            hous = t_/3600
-            print("Round 1 took %.2f seconds"%(t))
-            print("Projected Runtime: %d:%d:%d"%(hous, mins, secs))
-        print(i)
         for j in range(i+1, numModels):
-                w = np.sum([zsy.game(Ms[i], Ms[j])[1] for k in range(matches)])
-                wins[i] += w
-                wins[j] += matches-w
-    return wins
+            endGames.append(zsy.multiGame(Agents[i], Agents[j], matches, False))
+            w = np.sum([g[1] for g in endGames[-1]])
+            wins[i] += w
+            wins[j] += matches-w
+            k += 1
+            progbar.update(k)
+    winRates = wins / (numModels-1) / matches
+    return winRates, endGames

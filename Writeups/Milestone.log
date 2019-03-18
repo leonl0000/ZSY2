@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6930 64-bit) (preloaded format=pdflatex 2019.2.11)  27 FEB 2019 22:53
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6930 64-bit) (preloaded format=pdflatex 2019.2.11)  28 FEB 2019 01:37
 entering extended mode
 **./Milestone.tex
 (Milestone.tex
@@ -782,7 +782,14 @@ File: UTF8.enc 2015/04/18 4.8.4
 (C:\Users\darky\AppData\Roaming\MiKTeX\2.9\tex/latex/cjk/UTF8\UTF8.chr
 File: UTF8.chr 2015/04/18 4.8.4
 )
-(Milestone.aux)
+(Milestone.aux
+
+LaTeX Warning: Label `sample-table' multiply defined.
+
+
+LaTeX Warning: Label `sample-table' multiply defined.
+
+)
 \openout1 = `Milestone.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 12.
@@ -940,35 +947,60 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.53937> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 30.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12.045> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 33.
-LaTeX Font Info:    Try loading font information for C70+rm on input line 40.
+LaTeX Font Info:    Try loading font information for C70+rm on input line 34.
 
 (C:\Users\darky\AppData\Roaming\MiKTeX\2.9\tex/latex/ctex/fd\c70rm.fd
 File: c70rm.fd 2018/05/01 v2.4.14 Chinese font definition (CTEX)
 )
 Package CJKpunct Info: use punctuation spaces for family 'rm' with punctstyle (
-quanjiao) on input line 40.
-
-Underfull \hbox (badness 3417) in paragraph at lines 40--41
-[]\C70/rm/m/n/10.53937/4e ‰ 
- \C70/rm/m/n/10.53937/6e 8 \OT1/ptm/m/n/10.53937 (Zheng-ShangYou, or  |\C70/rm/
-m/n/10.53937/20 |\OT1/ptm/m/n/10.53937 Competition Up-
- []
+quanjiao) on input line 34.
 
 (C:\Users\darky\AppData\Roaming\MiKTeX\2.9\tex/latex/microtype\mt-cmr.cfg
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman 
 (RS)
 )
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.53937> on input line 55.
+(Font)              <10.53937> on input line 34.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 55.
+(Font)              <7> on input line 34.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 55.
+(Font)              <5> on input line 34.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <9.03374> on input line 89.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 89.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 111.
+(Font)              <7.52812> on input line 34.
+
+Underfull \hbox (badness 3417) in paragraph at lines 34--35
+[]\C70/rm/m/n/10.53937/4e ‰ 
+ \C70/rm/m/n/10.53937/6e 8 \OT1/ptm/m/n/10.53937 (Zheng-ShangYou, or  |\C70/rm/
+m/n/10.53937/20 |\OT1/ptm/m/n/10.53937 Competition Up-
+ []
+
+
+Underfull \hbox (badness 1648) in paragraph at lines 36--36
+[][][]\OT1/ptm/m/n/7.52812 Exactly 151,632,049,354,500, cal-cu-lated re-cur-siv
+ely with this code:
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+<h1.png, id=8, 270.00874pt x 139.52126pt>
+File: h1.png Graphic file (type png)
+<use h1.png>
+Package pdftex.def Info: h1.png  used on input line 54.
+(pdftex.def)             Requested size: 135.00403pt x 69.76045pt.
+<h2.png, id=9, 371.88937pt x 24.09pt>
+File: h2.png Graphic file (type png)
+<use h2.png>
+Package pdftex.def Info: h2.png  used on input line 57.
+(pdftex.def)             Requested size: 185.94423pt x 12.04495pt.
+<h3.png, id=10, 369.38pt x 71.26625pt>
+File: h3.png Graphic file (type png)
+<use h3.png>
+Package pdftex.def Info: h3.png  used on input line 61.
+(pdftex.def)             Requested size: 184.68954pt x 35.63303pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
 
 (C:\Users\darky\AppData\Roaming\MiKTeX\2.9\tex/generic/ctex\zhwindowsfonts.tex
 File: zhwindowsfonts.tex 2018/05/01 v2.4.14 Windows font map loader for pdfTeX 
@@ -977,43 +1009,117 @@ and DVIPDFMx (CTEX)
 
 
 
-pdfTeX warning (ext4): destination with the same identifier (name{table.1}) has
- been already used, duplicate ignored
+]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \hbox (badness 1655) in paragraph at lines 97--98
+[]\OT1/ptm/m/n/10.53937 As be-fore, state-action pairs are rep-re-sented by 4
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (10.0pt): 
+ Make it at least 10.84047pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[2pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) 
+has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.111 \end{document}
-                    ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 111.
+l.98 
+     pdfTeX warning (ext4): destination with the same identifier (name{figure.2
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.98 
+     pdfTeX warning (ext4): destination with the same identifier (name{figure.3
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.98 
+      <./h1.png> <./h2.png> <./h3.png>]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <9.03374> on input line 114.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 114.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+Package Fancyhdr Warning: \headheight is too small (10.0pt): 
+ Make it at least 10.84047pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[3pdfTeX warning (ext4): destination with the same identifier (name{table.1}) h
+as been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.188 
+      pdfTeX warning (ext4): destination with the same identifier (name{table.2
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.188 
+      pdfTeX warning (ext4): destination with the same identifier (name{table.3
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.188 
+      ]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 189.
+
+
+Package Fancyhdr Warning: \headheight is too small (10.0pt): 
+ Make it at least 10.84047pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[4
+
+]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 189.
  (Milestone.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 111.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 111.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 189.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 189.
 Package rerunfilecheck Info: File `Milestone.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 111.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 189.
  ) 
 Here is how much of TeX's memory you used:
- 23841 strings out of 492946
- 409600 string characters out of 3135527
- 486939 words of memory out of 3000000
- 27442 multiletter control sequences out of 15000+200000
- 554234 words of font info for 61 fonts, out of 3000000 for 9000
+ 23888 strings out of 492946
+ 410144 string characters out of 3135527
+ 487916 words of memory out of 3000000
+ 27466 multiletter control sequences out of 15000+200000
+ 558015 words of font info for 69 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,10n,63p,518b,592s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 41i,11n,63p,699b,514s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Windows/Fonts/si
 msun.ttc><C:/Windows/Fonts/simsun.ttc><C:/Windows/Fonts/simsun.ttc><C:/Program 
 Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/Mi
-KTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX 2.9/
-fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/typ
-e1/public/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/
-amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts
-/cm/cmsy9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:
-/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/Mi
-KTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
-pe1/urw/times/utmri8a.pfb>
-Output written on Milestone.pdf (1 page, 115389 bytes).
+KTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/
+fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Program Files/MiKTeX 2.9/fonts/typ
+e1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr
+8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Progra
+m Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Milestone.pdf (4 pages, 458932 bytes).
 PDF statistics:
- 76 PDF objects out of 1000 (max. 8388607)
- 8 named destinations out of 1000 (max. 500000)
- 9229 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 92 PDF objects out of 1000 (max. 8388607)
+ 21 named destinations out of 1000 (max. 500000)
+ 12316 words of extra memory for PDF output out of 14400 (max. 10000000)
 

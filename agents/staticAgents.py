@@ -23,6 +23,9 @@ class RandomAgent(Agent):
     def getMove(self, g):
         return random.choice(dc.getMovesFromGameState(g))
 
+    def getManyMoves(self, gs):
+        return [random.choice(dc.getMovesFromGameState(g)) for g in gs]
+
 
 
 class GreedyAgent(Agent):
@@ -33,6 +36,10 @@ class GreedyAgent(Agent):
         moves = dc.getMovesFromGameState(g)
         return moves[0] if len(moves) == 1 else moves[1]
 
+    def getManyMoves(self, gs):
+        moves = [dc.getMovesFromGameState(g) for g in gs]
+        return [m[0] if len(m) == 1 else m[1] for m in moves]
+
 class HumanAgent(Agent):
     def __init__(self):
         self.name = "Human"
@@ -42,25 +49,44 @@ class HumanAgent(Agent):
             lastMove = g.history[-1][0]
         else:
             lastMove = dc.emptyMove
-        if len(g.history)%2 == 1:
-            hand = g.B_Hand
-            opCardCount = len(dc.handToCards(g.A_Hand))
-        else:
-            hand = g.A_Hand
-            opCardCount = len(dc.handToCards(g.B_Hand))
+        hand = g.A_Hand if g.turn else g.B_Hand
+        opHand = g.B_Hand if g.turn else g.A_Hand
+        opCardCount = np.sum(opHand)
         _ = os.system('cls')
+
         moves = dc.getMovesFromGameState(g)
+        # print(moves)
         while True:
             print("Opponent Card Count: " + str(opCardCount))
             print("Current pattern:\n"+dc.stringHand(lastMove))
             print("Your Hand:\n"+dc.stringHand(hand))
             act = input("Enter Move: ").strip().lower().split(',')
-            actCards = [antiface[a] for a in act] if(act[0] != '') else []
-            move = dc.cardsToHand(actCards)
-            eq = [np.all(move == m) for m in moves]
-            if not np.any(eq):
-                _ = os.system('cls')
-                print("ILLEGAL MOVE\n\n")
+            if act[0] == "peek":
+                print(g.B_Name, g.B_Hand, '\n', g.A_Name, g.A_Hand)
+            elif act[0] == 'lll':
+                moves = dc.getMovesFromGameState(g)
+                for m in moves:
+                    print(m)
             else:
-                break
+                validMove = True
+                for a in act:
+                    if a != '' and a not in antiface:
+                        validMove = False
+                # val = validMove
+                if act[-1] == '' and len(act)>1:
+                    act = act[:-1]
+                if validMove:
+                    actCards = [antiface[a] for a in act] if(act[0] != '') else []
+                    move = dc.cardsToHand(actCards)
+                    validMove = validMove and np.any([np.all(move == m) for m in moves])
+                if not validMove:
+                    _ = os.system('cls')
+                    print("ILLEGAL MOVE\n\n")
+                    # moves = dc.getMovesFromGameState(g)
+                    # print('val', val)
+                    # print('MOVE', move)
+                    # for m in moves:
+                    #     print(m)
+                else:
+                    break
         return move

@@ -1,0 +1,2 @@
+model_checkpoint_path: "ConvNet2.chkp"
+all_model_checkpoint_paths: "ConvNet2.chkp"

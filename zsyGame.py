@@ -1,17 +1,13 @@
 import numpy as np
-import time
 import random
-import pickle
 
 import utils.deckops as dc
-from utils.misc import timer
 from utils.data import *
 
 import h5py
 import os
 from agents.staticAgents import RandomAgent, GreedyAgent, HumanAgent
-# from agents.dQAgent_old import *
-from progbar import ProgBar
+from tensorflow.python.keras.utils import Progbar
 
 randomAgent = RandomAgent()
 greedyAgent = GreedyAgent()
@@ -127,19 +123,13 @@ import itertools
 # Switch between the 2 ways to run games commented below
 from multiprocessing import Pool
 def runXGamesAndSaveData(X, buffer=Buffer()):
-    num_batches = int(X/buffer.index_every)
-    bar = ProgBar("Games", 50)
-    bar.start()
-    # p = Pool(3)
+    num_batches = int(X/1000)
+    bar = Progbar(num_batches, 50)
     for i in range(num_batches):
-        bar.percent = int(i*100/num_batches)
-        # endgames = p.map(game, [randomAgent] * buffer.index_every)
-        endgames = [game() for j in range(buffer.index_every)]
-        # data = p.map(gameStatesToData, endgames)
+        endgames = [game() for j in range(buffer)]
         data = [gameStatesToData(endgame) for endgame in endgames]
-        buffer.addToBuffer(data, buffer.index_every)
-    bar.stop()
-    bar.join()
+        buffer.addToBuffer(data)
+        bar.update(i)
     return buffer
 
 def stepGame(turn_start, names):
@@ -148,36 +138,53 @@ def stepGame(turn_start, names):
     B = dc.cardsToHand(d[18:36])
     history = []
     gameStates = [GameState(names[0], names[1], A, B, history, False, 0, 1-turn_start)]
-    moves = dc.getOpeningMoves(A)
-    return [A, B], names, moves, history, gameStates, turn_start
+    moves = dc.getOpeningMoves(A if turn_start == 0 else B)
+    return [[A, B], moves, history, gameStates]
 
-def takeMove(stepGame, move, i):
-    hands, names, moves, history, gameStates, turn = stepGame
+def takeMove(stepGame, move, turn, names):
+    hands, moves, history, gameStates = stepGame
     history.append((move, turn))
     hands[turn] -= move
-    gameStates.append(GameState(names[0], names[1], hands[0], hands[1], history, not np.any(hands[turn]), i, turn))
-    moves = dc.listLegalCounters(hands[1-turn], move)
-    return hands, names, moves, history, gameStates, 1-turn
+    done = not np.any(hands[turn])
+    i = gameStates[-1].ind + 1
+    gameStates.append(GameState(names[0], names[1], hands[0], hands[1], history, done, i, turn))
+    if done:
+        return gameStates, 1-turn
+    else:
+        moves = dc.getMoves(hands[1-turn], move)
+        return [hands, moves, history, gameStates]
 
-def multiGame(agentA, agentB, num_games=100, turn_start=0):
+import time
+def multiGame(agentA, agentB, num_games=100, print_stats=True):
     names = [agentA.name, agentB.name]
     agents = [agentA, agentB]
-    SA_functions = [agentA.getFunction_SAFromGameState(), agentB.getFunction_SAFromGameState()]
-    stepGames = [stepGame(turn_start, names) for _ in range(num_games)]
-    turn = turn_start
+    A_ind = int(num_games/2)
+    stepGames = [stepGame(0, names) for _ in range(A_ind)]
+    stepGames2 = [stepGame(1, names) for _ in range(num_games-A_ind)]
     endGames = []
+    gs = [g[3][-1] for g in stepGames2]
+    manyMoves = agents[1].getManyMoves(gs)
+    for i in range(len(stepGames2)-1, -1, -1):
+        stepGames2[i] = takeMove(stepGames2[i], manyMoves[i], 1, names)
+        if len(stepGames2[i]) == 2:
+            endGames.append(stepGames2[i])
+            del stepGames2[i]
+    stepGames += stepGames2
+    turn = 0
     while len(stepGames) > 0:
-        sa = [SA_functions[turn](sg[3], sg[sg[-1]], sg[2]) for sg in stepGames]
-        saBInds = [0] * (len(sa)+1)
-        for i in range(1, len(sa)+1):
-            saBInds[i] = saBInds[i-1] + sa[i-1].shape[0]
-        sa = np.concatenate(sa, axis=0)
-        scores = agents[turn].sess.run(agents[turn].out, feed_dict={agents[turn].sa: sa})
-        for i in range(len(saBInds)-1):
-            if random.random() < agentB.exploration_prob:
-                move = random.choice(stepGames[i][2])
-            else:
-                move = stepGames[i][2][np.argmax(scores[saBInds[i]:saBInds[i+1]])]
-            stepGames[i] = takeMove(stepGames[i], move)
+        gs = [g[3][-1] for g in stepGames]
+        manyMoves = agents[turn].getManyMoves(gs)
+        for i in range(len(stepGames)-1, -1, -1):
+            stepGames[i] = takeMove(stepGames[i], manyMoves[i], turn, names)
+            if len(stepGames[i]) == 2:
+                endGames.append(stepGames[i])
+                del stepGames[i]
+        turn = 1-turn
+    if print_stats:
+        wins = np.sum([g[1] for g in endGames])
+        rat = wins / num_games
+        interval = 200 * np.sqrt(rat * (1 - rat) / num_games)
+        rat *= 100
+        print("Wins ratio: %.2f%% +- %.2f%%" % (rat, interval))
 
-    return stepGames, moves
+    return endGames

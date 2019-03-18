@@ -2,32 +2,15 @@ import numpy as np
 import sys
 import os
 homeDir = os.path.dirname(os.path.dirname(__file__))
-dataDir = os.path.join(homeDir, "data")
-
 sys.path.append(homeDir)
 
-import pickle
 import h5py
 import utils.deckops as dc
 import itertools
 import tensorflow as tf
 
-
-
-
-def saveObject(gameStates, fname):
-    f = open(fname, 'wb+')
-    pickle.dump(gameStates, f)
-    f.close()
-
-def loadObject(fname):
-    f = open(fname, 'rb')
-    return pickle.load(f)
-
-
-buffer_uneven_message = "Uneven amount of games. Provided %d games, but buffer only stores chunks of %d games. Last %d games discarded"
 class Buffer:
-    def __init__(self, fileName="buffer.h5", max_eps_in_buffer=1000000, index_every = 1000):
+    def __init__(self, fileName="buffer.h5", max_eps=250000):
         self.fileName = fileName
         self.sample_order = None
         self.sample_ind = 0
@@ -40,34 +23,31 @@ class Buffer:
             self.remaining_steps = np.zeros((0)).astype(np.int8)
             self.isWinner = np.zeros((0)).astype(np.int8)
             self.buffer_idx = []
+            self.max_eps = max_eps
         else:
             self.loadFromFile()
-            self.max_eps_in_buffer = max_eps_in_buffer
-            self.index_every = index_every
 
     # NOTE: Ensure all data is int8 or uint8, or else numpy concats will be VERY slow
-
-    def addToBuffer(self, data, num_games):
-        assert(num_games == self.index_every)
-        if len(data) % self.index_every != 0:
-            print(buffer_uneven_message % (len(data), self.index_every, len(data) % self.index_every))
+    def addToBuffer(self, data):
         expanded_states = np.array(list(itertools.chain.from_iterable([d[0] for d in data])))
         expanded_actions = np.array(list(itertools.chain.from_iterable([d[1] for d in data])))
         actions = np.array(list(itertools.chain.from_iterable([d[2] for d in data])))
         step = np.array(list(itertools.chain.from_iterable([d[3] for d in data]))).astype(np.int8)
         remaining_steps = np.array(list(itertools.chain.from_iterable([d[4] for d in data]))).astype(np.int8)
         isWinner = np.array(list(itertools.chain.from_iterable([d[5] for d in data]))).astype(np.int8)
-        if len(self.buffer_idx) >= (self.max_eps_in_buffer / self.index_every):
-            self.expanded_states = self.expanded_states[self.buffer_idx[1]:]
-            self.expanded_actions = self.expanded_actions[self.buffer_idx[1]:]
-            self.actions = self.actions[self.buffer_idx[1]:]
-            self.step = self.step[self.buffer_idx[1]:]
-            self.remaining_steps = self.remaining_steps[self.buffer_idx[1]:]
-            self.isWinner = self.isWinner[self.buffer_idx[1]:]
-
-            self.buffer_idx = [idx - self.buffer_idx[1] for idx in self.buffer_idx]
-            self.buffer_idx = self.buffer_idx[1:]
-        self.buffer_idx.append(len(self.expanded_states))
+        idx = np.argwhere(step == 1).reshape(-1)
+        if len(self.buffer_idx) + len(idx) > self.max_eps:
+            cut_ind_ind = len(self.buffer_idx) + len(idx) - self.max_eps
+            cut_ind = self.buffer_idx[cut_ind_ind]
+            self.expanded_states = self.expanded_states[cut_ind:]
+            self.expanded_actions = self.expanded_actions[cut_ind:]
+            self.actions = self.actions[cut_ind:]
+            self.step = self.step[cut_ind:]
+            self.remaining_steps = self.remaining_steps[cut_ind:]
+            self.isWinner = self.isWinner[cut_ind:]
+            self.buffer_idx = [idx - cut_ind for idx in self.buffer_idx[cut_ind_ind:]]
+        idx = list(idx+self.expanded_states.shape[0])
+        self.buffer_idx += idx
         self.expanded_states = np.vstack([self.expanded_states, expanded_states])
         self.expanded_actions = np.vstack([self.expanded_actions, expanded_actions])
         self.actions = np.vstack([self.actions, actions])
@@ -75,12 +55,72 @@ class Buffer:
         self.remaining_steps = np.concatenate([self.remaining_steps, remaining_steps])
         self.isWinner = np.concatenate([self.isWinner, isWinner])
 
+    def numGames(self):
+        return len(self.buffer_idx)
+
+    def numPoints(self):
+        return self.expanded_states.shape[0]
+
+    def numBatchs(self, batch_size=4096):
+        return int(self.expanded_states.shape[0]/batch_size)
+
     # In an active setting, call this when adding/removing from buffer or else
     # the indices won't work (games are variable length)
     def reshuffle(self, shuffle=True):
         self.sample_order = np.random.permutation(self.expanded_states.shape[0]) \
             if shuffle else np.arange(self.expanded_states.shape[0])
         self.sample_ind = 0
+
+    def getSample(self, sample_size=4096, increment_sample=True, shuffle=True, reOrder=False):
+        if self.sample_order is None or reOrder or self.sample_ind + sample_size > len(self.sample_order):
+            self.reshuffle(shuffle)
+        idx = self.sample_order[self.sample_ind : self.sample_ind + sample_size]
+        history_ag = [self.actions[(i-self.step[i]+1)+(self.step[i]+1)%2:i:2] for i in idx]
+        history_op = [self.actions[(i-self.step[i]+1)+(self.step[i])%2:i:2] for i in idx]
+
+        sample = (self.expanded_states[idx],
+                  self.expanded_actions[idx],
+                  self.actions[idx],
+                  history_ag,
+                  history_op,
+                  self.remaining_steps[idx],
+                  self.isWinner[idx])
+        if increment_sample:
+            self.sample_ind += sample_size
+        return sample
+
+
+    def saveToFile(self):
+        f = h5py.File(self.fileName, 'w')
+        ES_dset = f.create_dataset('expanded_states', self.expanded_states.shape, dtype=self.expanded_states.dtype)
+        ES_dset[...] = self.expanded_states
+        EA_dset = f.create_dataset('expanded_actions', self.expanded_actions.shape, dtype=self.expanded_actions.dtype)
+        EA_dset[...] = self.expanded_actions
+        A_dset = f.create_dataset('actions', self.actions.shape, dtype=self.actions.dtype)
+        A_dset[...] = self.actions
+        St_dset = f.create_dataset('step', self.step.shape, dtype=self.step.dtype)
+        St_dset[...] = self.step
+        RS_dset = f.create_dataset('remaining_steps', self.remaining_steps.shape, dtype=self.remaining_steps.dtype)
+        RS_dset[...] = self.remaining_steps
+        iW_dset = f.create_dataset('isWinner', self.isWinner.shape, dtype=self.isWinner.dtype)
+        iW_dset[...] = self.isWinner
+        idx_as_np = np.array(self.buffer_idx)
+        idx_dest = f.create_dataset('buffer_idx', idx_as_np.shape, dtype=idx_as_np.dtype)
+        idx_dest[...] = idx_as_np
+        max_eps_dset = f.create_dataset('max_eps', (1,), dtype=np.int32)
+        max_eps_dset[...] = self.max_eps
+        f.close()
+
+    def loadFromFile(self):
+        f = h5py.File(self.fileName, 'r')
+        self.expanded_states = f["expanded_states"][:]
+        self.expanded_actions = f["expanded_actions"][:]
+        self.actions = f["actions"][:]
+        self.step = f["step"][:]
+        self.remaining_steps = f["remaining_steps"][:]
+        self.isWinner = f["isWinner"][:]
+        self.buffer_idx = list(f['buffer_idx'][:])
+        self.max_eps = f['max_eps'][:][0]
 
     def checkBuffer(self):
         self.reshuffle()
@@ -103,47 +143,19 @@ class Buffer:
                 return counter, i
             progbar.update(counter)
 
-    def getSample(self, sample_size=2048, increment_sample = True, shuffle=True, reOrder=False):
-        if self.sample_order is None or reOrder or self.sample_ind + sample_size > len(self.sample_order):
-            self.reshuffle(shuffle)
-        idx = self.sample_order[self.sample_ind : self.sample_ind + sample_size]
-        history_ag = [self.actions[(i-self.step[i]+1)+(self.step[i]+1)%2:i:2] for i in idx]
-        history_op = [self.actions[(i-self.step[i]+1)+(self.step[i])%2:i:2] for i in idx]
-
-        sample = (self.expanded_states[idx],
-                  self.expanded_actions[idx],
-                  self.actions[idx],
-                  history_ag,
-                  history_op,
-                  self.remaining_steps[idx],
-                  self.isWinner[idx])
-        if increment_sample:
-            self.sample_ind += sample_size
-        return sample, self.sample_ind, len(self.sample_order)
+    def reIndex(self):
+        self.buffer_idx = list(np.argwhere(self.step == 1).reshape(-1))
 
 
-    def saveToFile(self):
-        f = h5py.File(self.fileName, 'w')
-        ES_dset = f.create_dataset('expanded_states', self.expanded_states.shape, dtype=self.expanded_states.dtype)
-        ES_dset[...] = self.expanded_states
-        EA_dset = f.create_dataset('expanded_actions', self.expanded_actions.shape, dtype=self.expanded_actions.dtype)
-        EA_dset[...] = self.expanded_actions
-        A_dset = f.create_dataset('actions', self.actions.shape, dtype=self.actions.dtype)
-        A_dset[...] = self.actions
-        St_dset = f.create_dataset('step', self.step.shape, dtype=self.step.dtype)
-        St_dset[...] = self.step
-        RS_dset = f.create_dataset('remaining_steps', self.remaining_steps.shape, dtype=self.remaining_steps.dtype)
-        RS_dset[...] = self.remaining_steps
-        iW_dset = f.create_dataset('isWinner', self.isWinner.shape, dtype=self.isWinner.dtype)
-        iW_dset[...] = self.isWinner
-        f.close()
-
-    def loadFromFile(self):
-        f = h5py.File(self.fileName, 'r')
-        self.expanded_states = f["expanded_states"][:]
-        self.expanded_actions = f["expanded_actions"][:]
-        self.actions = f["actions"][:]
-        self.step = f["step"][:]
-        self.remaining_steps = f["remaining_steps"][:]
-        self.isWinner = f["isWinner"][:]
-
+    def resizeBuffer(self, newMaxSize=250000):
+        cur_size = len(self.buffer_idx)
+        self.max_eps = newMaxSize
+        if cur_size > self.max_eps:
+            cut_ind = self.buffer_idx[-self.max_eps]
+            self.expanded_states = self.expanded_states[cut_ind:]
+            self.expanded_actions = self.expanded_actions[cut_ind:]
+            self.actions = self.actions[cut_ind:]
+            self.step = self.step[cut_ind:]
+            self.remaining_steps = self.remaining_steps[cut_ind:]
+            self.isWinner = self.isWinner[cut_ind:]
+            self.buffer_idx = [idx - cut_ind for idx in self.buffer_idx[-self.max_eps:]]

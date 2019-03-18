@@ -1,6 +1,5 @@
 *.pyc
 *.h5
-*.pkl
 *.zip
 **/ML-Agents/*
 **/[Ll]ibrary/*

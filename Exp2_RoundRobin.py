@@ -53,7 +53,7 @@ def battleRoyal(buffer, agents, sim_winrate_exp, numGames = 50000, multigame_siz
 
 
 if __name__ == '__main__':
-    buffer = zsy.Buffer(r'Experiments\02_RoundRobin\minibuf.h5')
+    buffer = zsy.Buffer(os.path.join('Experiments', '02_RoundRobin', 'minibuf.h5'))
     configs = cfg.readConfigs('02_RoundRobin')
     agents = [cfg.initFromConfig(c) for c in configs]
     epochs = 20

@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 using UnityEngine.UI;
 using TensorFlow;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class zsyGame : MonoBehaviour
 {
@@ -36,6 +37,8 @@ public class zsyGame : MonoBehaviour
     public static int[] emptyMove = new int[15] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
     public static void PrintArr(int[] arr) { Debug.Log(string.Join(", ", arr)); }
+    public static readonly bool[] allIncreasing = new bool[15] {
+        true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
 
     public int[] PlayerHand;
     public int[] AgentHand;
@@ -44,7 +47,7 @@ public class zsyGame : MonoBehaviour
     List<List<CardButton>> cbs;
     List<List<CardButton>> Agent_cbs;
     public int[] curSelected;
-    public bool[] isIncreasing;
+    public bool[] isIncreasing = new bool[15];
     public int[] curMove;
     public List<int[]> LegalMoves;
 
@@ -75,8 +78,7 @@ public class zsyGame : MonoBehaviour
 
     public void clearTable() {
         foreach (Transform child in TableTransform)
-            if(child.name != "PlayCardsButton")
-                Destroy(child.gameObject);
+            if(child.tag != "dontClear") Destroy(child.gameObject);
     }
     public void clearAll() {
         foreach (Transform child in AgentHandTransform)
@@ -90,18 +92,13 @@ public class zsyGame : MonoBehaviour
             foreach (CardButton cb in _cbs)
                 cb.SetUnselected();
         curSelected = new int[15];
+        allIncreasing.CopyTo(isIncreasing, 0);
     }
     public void setScoreText() {ScoreText.text = string.Format("Human: {0} \t\t\t\t\t\t\tComputer: {1}", playerScore, computerScore);}
 
-    public void CardClick(int cardVal) {
-        if(curSelected[cardVal] < PlayerHand[cardVal] && isIncreasing[cardVal]) {
-            cbs[cardVal][curSelected[cardVal]].SetSelected();
-            curSelected[cardVal]++;
-        } else {
-            curSelected[cardVal]--;
-            cbs[cardVal][curSelected[cardVal]].SetUnselected();
-            isIncreasing[cardVal] = curSelected[cardVal] == 0;
-        }
+    public void CardClick(int cardVal, bool isSelected) {
+        if (isSelected) curSelected[cardVal] += 1;
+        else curSelected[cardVal] -= 1;
         bool MoveIsLegal = false;
         foreach (int[] move in LegalMoves) MoveIsLegal |= curSelected.SequenceEqual(move);
     }
@@ -122,26 +119,33 @@ public class zsyGame : MonoBehaviour
         clearTable();
         float w = 41;
         float f = Screen.width / 631f;
+        curMove = new int[15];
+        curSelected.CopyTo(curMove, 0);
+        History.Add(curMove);
         for (int i=0; i<15; i++) {
-            if (curSelected[i] == 0) continue;
-            for (int j = curSelected[i] - 1; j > -1; j--) {
-                cbs[i][j].bg.transform.SetParent(TableTransform, false);
-                cbs[i][j].SetUnselected();
-                cbs[i][j].bt.enabled = false;
-                cbs[i].RemoveAt(j);
-            }
-            for(int j=0; j<cbs[i].Count; j++)
-                cbs[i][j].bg.transform.position -= 12 * curSelected[i] * Vector3.up * f;
             PlayerHand[i] -= curSelected[i];
+            for (int j = cbs[i].Count-1; j > -1; j--) {
+                if (curSelected[i] == 0) break;
+                if (cbs[i][j].getSelected()) {
+                    curSelected[i] -= 1;
+                    cbs[i][j].bg.transform.SetParent(TableTransform, false);
+                    cbs[i][j].bg.transform.position += 12 * (curSelected[i] - j) * Vector3.up * f;
+                    cbs[i][j].SetUnselected();
+                    cbs[i][j].bt.enabled = false;
+                    cbs[i].RemoveAt(j);
+                    for(int k=j; k<cbs[i].Count; k++)
+                        cbs[i][k].bg.transform.position -= 12 * Vector3.up * f;
+                }
+            }
         }
         TableTransform.GetComponent<Image>().color = PlayerHandTransform.GetComponent<Image>().color;
-        curMove = curSelected;
-        History.Add(curMove);
         curSelected = new int[15];
+        allIncreasing.CopyTo(isIncreasing, 0);
         if (PlayerHand.SequenceEqual(emptyMove)) {
             playerScore += 1;
             ScoreText.text = string.Format("Human:{0} \t\t\t\t\t\t\tComputer:{1}", playerScore, computerScore);
-            manager.postGame(true);
+            if (TutorialCounter == 0) manager.postGame(true);
+            else TutorialFunction();
         } else DelayAgentPlay();
     }
 
@@ -176,6 +180,7 @@ public class zsyGame : MonoBehaviour
         } else {
             LegalMoves = GetLegalMoves(PlayerHand, curMove);
             SetPlayerButtonStatus(true);
+            if (TutorialCounter != 0) TutorialFunction();
         }
     }
 
@@ -229,7 +234,7 @@ public class zsyGame : MonoBehaviour
         //Init a bunch of zeros stuffs
         History = new List<int[]>();
         curSelected = new int[15];
-        isIncreasing = new bool[15] { true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
+        allIncreasing.CopyTo(isIncreasing, 0);
         curMove = new int[15];
         int turn = Random.Range(0, 2);
         if(agent != null) PlayingAgent = agent;
@@ -237,6 +242,198 @@ public class zsyGame : MonoBehaviour
         else LegalMoves = GetOpeningMoves(PlayerHand);
     }
 
+    public void StartTutorialGame() {
+        clearAll();
+        AgentDelayTimeout = 1.2f;
+        int[] shuffledInds = new int[] {
+            0, 11, 12, 15, 13, 16, 17, 22, 23, 25, 29, 31, 28, 32, 33, 34, 35, 52,
+            2, 3, 7, 4, 5, 10, 9, 14, 19, 20, 26, 27, 24, 37, 36, 42, 40, 44,
+        };
+        List<Tuple<string, int>> PlayerCards = new List<Tuple<string, int>>();
+        List<Tuple<string, int>> AgentCards = new List<Tuple<string, int>>();
+        PlayerHand = new int[15];
+        int[] PlayerHandTemp = new int[15];
+        int[] AgentHandTemp = new int[15];
+        AgentHand = new int[15];
+        for (int i = 0; i < 18; i++) {
+            PlayerCards.Add(CardAndVals[shuffledInds[i]]);
+            PlayerHand[CardAndVals[shuffledInds[i]].Item2]++;
+            PlayerHandTemp[CardAndVals[shuffledInds[i]].Item2]++;
+            AgentCards.Add(CardAndVals[shuffledInds[i + 18]]);
+            AgentHand[CardAndVals[shuffledInds[i + 18]].Item2]++;
+            AgentHandTemp[CardAndVals[shuffledInds[i + 18]].Item2]++;
+        }
+        PlayerCards = PlayerCards.OrderBy(o => -o.Item2).ToList();
+        AgentCards = AgentCards.OrderBy(o => -o.Item2).ToList();
+
+        float w = 41;
+        float f = Screen.width / 631f;
+        cbs = new List<List<CardButton>>();
+        Agent_cbs = new List<List<CardButton>>();
+        for (int i = 0; i < 15; i++) {
+            cbs.Add(new List<CardButton>());
+            Agent_cbs.Add(new List<CardButton>());
+        }
+        foreach (Tuple<string, int> cav in PlayerCards) {
+            CardButton cb = CardButton.NewCardButton(cav.Item1, CardClick, cav.Item2);
+            cb.bg.transform.SetParent(PlayerHandTransform, false);
+            cb.bg.transform.position = new Vector3((started ? 30 : -285) + cav.Item2 * w, 30 + PlayerHandTemp[cav.Item2] * 12, 0) * f;
+            cbs[cav.Item2].Insert(0, cb);
+            PlayerHandTemp[cav.Item2] -= 1;
+        }
+        foreach (Tuple<string, int> cav in AgentCards) {
+            CardButton cb = CardButton.NewCardButton(cav.Item1);
+            cb.bg.transform.SetParent(AgentHandTransform, false);
+            cb.bg.transform.position = new Vector3((started ? 30 : -285) + cav.Item2 * w, (started ? 565 : 330) + AgentHandTemp[cav.Item2] * 12, 0) * f;
+            cb.bt.enabled = false;
+            Agent_cbs[cav.Item2].Insert(0, cb);
+            AgentHandTemp[cav.Item2] -= 1;
+        }
+
+        started = true;
+        AgentCardCountText.text = "18";
+        ConfidenceText.text = "";
+
+        //Init a bunch of zeros stuffs
+        History = new List<int[]>();
+        curSelected = new int[15];
+        allIncreasing.CopyTo(isIncreasing, 0);
+        curMove = new int[15];
+        PlayingAgent = new TutorialAgent();
+        LegalMoves = GetOpeningMoves(PlayerHand);
+        PlayCardsButton.transform.SetAsFirstSibling();
+        tutorialObject = Resources.Load<GameObject>("TutorialObject");
+        cv2 = GameObject.Find("Canvas2");
+        TutorialFunction();
+    }
+    public void callTrueTutorial() {
+        TutorialFunction(true);
+    }
+    private GameObject cv2;
+    public int TutorialCounter = 0;
+    private GameObject tutorialObject;
+    GameObject previousTutorial;
+    private void TutorialBox(int i) {
+        Destroy(previousTutorial);
+        GameObject g = Instantiate(tutorialObject);
+        tutorialBoxScript tbs = g.GetComponent<tutorialBoxScript>();
+        g.transform.SetParent(cv2.transform, false);
+        tbs.Set(i);
+        previousTutorial = g;
+        TutorialCounter++;
+    }
+    private void TutorialPlayCards(int[] cardsToPlay, int nextCounter) {
+        if (curSelected.SequenceEqual(cardsToPlay)) {
+            TutorialCounter = nextCounter;
+            Destroy(previousTutorial);
+            PlayCards();
+        } else {
+            if (TutorialCounter == nextCounter-1) manager.Popup("Please follow the tutorial", Color.green);
+            else TutorialCounter++;
+        }
+    }
+    public void quitTutorial() {
+        Destroy(previousTutorial);
+    }
+    public void TutorialFunction(bool isTable = false) {
+        switch(TutorialCounter) {
+            case int n when n < 5:
+                if (!isTable) TutorialBox(TutorialCounter);
+                break;
+
+            case 5:
+            case 6:
+                TutorialPlayCards(new int[15] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 7);
+                break;
+
+
+            case 7:
+            case 8:
+                TutorialBox(TutorialCounter - 2);
+                break;
+
+            case 9:
+            case 10:
+                TutorialPlayCards(new int[15] { 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 }, 11);
+                break;
+
+            case 11:
+                TutorialBox(7);
+                break;
+
+            case 12:
+            case 13:
+                TutorialPlayCards(new int[15] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 }, 14);
+                break;
+
+            case int n when (n >= 14 && n < 19):
+                TutorialBox(TutorialCounter - 6);
+                break;
+
+            case 19:
+            case 20:
+                TutorialPlayCards(new int[15] { 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 21);
+                break;
+
+            case 21:
+            case 22:
+                TutorialBox(TutorialCounter - 8);
+                break;
+
+            case 23:
+            case 24:
+                TutorialPlayCards(new int[15] { 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0 }, 25);
+                break;
+
+            case int n when (n >= 25 && n < 28):
+                TutorialBox(TutorialCounter - 10);
+                break;
+
+            case 28:
+            case 29:
+                TutorialPlayCards(new int[15] { 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 30);
+                break;
+
+            case int n when (n >= 30 && n < 33):
+                TutorialBox(TutorialCounter - 12);
+                break;
+
+            case 33:
+            case 34:
+                TutorialPlayCards(new int[15] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 35);
+                break;
+
+            case int n when (n >= 35 && n < 42):
+                TutorialBox(TutorialCounter - 14);
+                break;
+
+            case 42:
+            case 43:
+                TutorialPlayCards(new int[15] { 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0 }, 44);
+                break;
+
+            case 44:
+                TutorialBox(28);
+                break;
+
+            case 45:
+            case 46:
+                TutorialPlayCards(new int[15] { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 47);
+                break;
+
+            case int n when (n >= 46 && n < 54):
+                TutorialBox(TutorialCounter - 18);
+                break;
+
+            default:
+                TutorialCounter = 0;
+                PlayCardsButton.transform.SetAsLastSibling();
+                AgentDelayTimeout = 0.5f;
+                manager.mainMenu();
+                Destroy(previousTutorial);
+                break;
+        }
+    }
 
     public List<int[]> GetOpeningMoves(int[] hand) {
         var runner = session.GetRunner();
@@ -286,6 +483,7 @@ public class zsyGame : MonoBehaviour
     public Manager manager;
     public Transform PlayerHandTransform;
     public Transform TableTransform;
+    public Button PlayCardsButton;
     public Transform AgentHandTransform;
     public TextMeshProUGUI ScoreText;
     public TextMeshProUGUI AgentCardCountText;
@@ -304,6 +502,7 @@ public class zsyGame : MonoBehaviour
 
         PlayerHandTransform = transform.Find("PlayerHand");
         TableTransform = transform.Find("Table");
+        PlayCardsButton = TableTransform.Find("PlayCardsButton").GetComponent<Button>();
         AgentHandTransform = transform.Find("AgentHand");
         ScoreText = AgentHandTransform.Find("Title").Find("ScoreText").GetComponent<TextMeshProUGUI>();
         AgentCardCountText = AgentHandTransform.Find("Image").Find("CardCountText").GetComponent<TextMeshProUGUI>();
@@ -314,7 +513,7 @@ public class zsyGame : MonoBehaviour
 
         randomAgent = new RandomAgent();
         greedyAgent = new GreedyAgent();
-        learnedAgent = new LearnedAgent("ConvNet2");
+        learnedAgent = new LearnedAgent(3);
     }
     
     void Update()

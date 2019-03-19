@@ -12,12 +12,13 @@ def testAgents(agents, test_quantity, test_winrate_exp):
     for agent in agents:
         gss.append(ms.testStatic(agent, test_quantity, 0)[0])
     progbar = tf.keras.utils.Progbar(len(agents), 30, 1, 1)
-    for i, agent in enumerate(agents):
-        progbar.update(i)
+    progbar.update(0)
+    for b, agent in enumerate(agents):
         rg, gg, og = ms.testStatic(agent, test_quantity, 0)[0]
         agent.v_Random = agent.v_Random*test_winrate_exp + (1-test_winrate_exp)*np.sum([g[1] for g in rg])/test_quantity
         agent.v_Greedy = agent.v_Greedy*test_winrate_exp + (1-test_winrate_exp)*np.sum([g[1] for g in gg])/test_quantity
-        agent.v_oldAg = agent.v_oldAg*test_winrate_exp + (1-test_winrate_exp)*np.sum([g[1] for g in og])/test_quantity
+        agent.v_OldAg = agent.v_OldAg*test_winrate_exp + (1-test_winrate_exp)*np.sum([g[1] for g in og])/test_quantity
+        progbar.update(b+1)
 
 
 def battleRoyale(buffer, agents, sim_winrate_exp, numGames = 50000, max_multigame_size=500):
@@ -75,6 +76,8 @@ if __name__ == '__main__':
         i = int(j/500)
         print("Loaded %d/%d Agents at epoch %d, total steps %d" % (len(agents), init_num_agents, i, j))
 
+    if j==0:
+        testAgents(agents, test_quantity, 0)
 
     while i < epochs:
         print('\n\nEpoch %d, buffer size %d' % (i, buffer.numPoints()))
@@ -103,6 +106,8 @@ if __name__ == '__main__':
         for agent in killed:
             print("\n%s with vs rate %.2f killed" % (agent.name, agent.vs), end="")
         killed_agents += killed
+        if len(killed) != 0:
+            print("\n%d/%d Agents remaining"%(len(agents), init_num_agents))
         i += 1
 
     for agent in agents:

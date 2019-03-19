@@ -2,7 +2,34 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3e737cc1-bd5f-465c-beaf-b4d49309b171" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Exp5_BattleRoyale.py" beforeDir="false" afterPath="$PROJECT_DIR$/Exp5_BattleRoyale.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Experiments/05_BattleRoyale/configs.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Experiments/05_BattleRoyale/configs.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Unity/ZSY/Assets/Scenes/1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/Assets/Scenes/1.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Unity/ZSY/Assets/Scripts/Agent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/Assets/Scripts/Agent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Unity/ZSY/Assets/Scripts/CardButton.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/Assets/Scripts/CardButton.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Unity/ZSY/Assets/Scripts/LearnedAgent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/Assets/Scripts/LearnedAgent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Unity/ZSY/Assets/Scripts/Manager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/Assets/Scripts/Manager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Unity/ZSY/Assets/Scripts/zsyGame.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/Assets/Scripts/zsyGame.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Unity/ZSY/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Unity/ZSY/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/ProjectSettings/ProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Unity/ZSY/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/ProjectSettings/ProjectVersion.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Unity/ZSY/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/ProjectSettings/TagManager.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agents/ComboAgent.py" beforeDir="false" afterPath="$PROJECT_DIR$/agents/ComboAgent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/ConvNet2.chkp.data-00000-of-00001" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/ConvNet2.chkp.index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/ConvNet2.chkp.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/ConvNet2_graph.pbtxt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/checkpoint" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/frozen_ConvNet2.bytes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/opt_ConvNet2.bytes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out1/DenseNet3.chkp.data-00000-of-00001" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out1/DenseNet3.chkp.index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out1/DenseNet3.chkp.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out1/DenseNet3_graph.pbtxt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out1/checkpoint" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out1/frozen_DenseNet3.bytes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/test_code_0.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/test_code_0.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,34 +40,22 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/zsyGame.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2225">
-              <caret line="168" column="35" selection-start-line="168" selection-start-column="35" selection-end-line="168" selection-end-column="35" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utils/deckops.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="310">
-              <caret line="71" column="38" selection-start-line="71" selection-start-column="38" selection-end-line="71" selection-end-column="38" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Unity.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="63" lean-forward="true" selection-start-line="63" selection-end-line="63" />
+            <state relative-caret-position="85">
+              <caret line="5" column="23" selection-start-line="5" selection-start-column="23" selection-end-line="7" selection-end-column="62" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/utils/data.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="17" column="29" selection-start-line="17" selection-start-column="15" selection-end-line="17" selection-end-column="29" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -48,17 +63,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Exp2_RoundRobin.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="20" column="81" selection-start-line="20" selection-start-column="67" selection-end-line="20" selection-end-column="81" />
+            <state relative-caret-position="170">
+              <caret line="55" column="31" selection-start-line="55" selection-start-column="4" selection-end-line="55" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/utils/test_code_0.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="185">
+              <caret line="107" lean-forward="true" selection-start-line="107" selection-end-line="107" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utils/test_code_0.py">
+        <entry file="file://$PROJECT_DIR$/Exp4_Aggregation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="4" selection-start-line="4" selection-end-line="4" />
+            <state relative-caret-position="185">
+              <caret line="36" column="100" selection-start-line="36" selection-start-column="100" selection-end-line="36" selection-end-column="100" />
             </state>
           </provider>
         </entry>
@@ -66,8 +90,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/agents/ComboAgent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" column="36" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
+            <state relative-caret-position="238">
+              <caret line="14" column="58" selection-start-line="14" selection-start-column="58" selection-end-line="14" selection-end-column="58" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -78,8 +102,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/agents/LearningAgent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1717">
-              <caret line="146" column="19" selection-start-line="146" selection-start-column="19" selection-end-line="146" selection-end-column="19" />
+            <state relative-caret-position="-459">
+              <caret line="24" column="4" selection-start-line="24" selection-start-column="4" selection-end-line="31" selection-end-column="48" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -90,8 +114,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/agents/DenseNetAgent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-255">
-              <caret line="75" column="51" selection-start-line="75" selection-start-column="51" selection-end-line="75" selection-end-column="51" />
+            <state relative-caret-position="442">
+              <caret line="59" selection-start-line="50" selection-start-column="8" selection-end-line="59" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -99,11 +123,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Exp5_BattleRoyale.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="457">
-              <caret line="51" lean-forward="true" selection-start-line="51" selection-end-line="51" />
+            <state>
+              <caret selection-end-line="8" />
             </state>
           </provider>
         </entry>
@@ -111,7 +135,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utils/misc.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
+            <state relative-caret-position="510">
               <caret line="30" column="19" selection-start-line="30" selection-start-column="19" selection-end-line="30" selection-end-column="19" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
@@ -181,20 +205,21 @@
         <option value="$PROJECT_DIR$/Exp3_Discordance.py" />
         <option value="$PROJECT_DIR$/agents/ConvNetAgent.py" />
         <option value="$PROJECT_DIR$/agents/LearningAgent.py" />
-        <option value="$PROJECT_DIR$/agents/ComboAgent.py" />
         <option value="$PROJECT_DIR$/Exp2_RoundRobin.py" />
         <option value="$PROJECT_DIR$/Unity.py" />
-        <option value="$PROJECT_DIR$/utils/test_code_0.py" />
         <option value="$PROJECT_DIR$/utils/misc.py" />
         <option value="$PROJECT_DIR$/Exp5_BattleRoyale.py" />
+        <option value="$PROJECT_DIR$/agents/ComboAgent.py" />
+        <option value="$PROJECT_DIR$/Exp4_Aggregation.py" />
+        <option value="$PROJECT_DIR$/utils/test_code_0.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-11" />
-    <option name="y" value="-11" />
-    <option name="width" value="1946" />
-    <option name="height" value="1106" />
+    <option name="x" value="-12" />
+    <option name="y" value="-12" />
+    <option name="width" value="1947" />
+    <option name="height" value="1107" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -381,16 +406,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/agents/LearningAgentConfig.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="27" column="34" lean-forward="true" selection-start-line="27" selection-start-column="34" selection-end-line="27" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/agents/LearningAgentConfig.py" />
     <entry file="file://$USER_HOME$/Dropbox (Personal)/Leon Lin/work misc/HK2/assignment2/configs/q2_linear.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -405,16 +421,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Experiment_1_Batch_Size.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="457">
-          <caret line="30" column="69" selection-start-line="30" selection-start-column="69" selection-end-line="30" selection-end-column="69" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Experiment_1_Batch_Size.py" />
     <entry file="file://$PROJECT_DIR$/agents/Configurator.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
@@ -449,20 +456,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Archive/test_code_0.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="26" column="55" selection-start-line="26" selection-start-column="55" selection-end-line="26" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Exp2_BattleRoyal01.5.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1190">
-          <caret line="70" column="16" selection-start-line="70" selection-start-column="16" selection-end-line="70" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Archive/test_code_0.py" />
+    <entry file="file://$PROJECT_DIR$/Exp2_BattleRoyal01.5.py" />
     <entry file="file://$USER_HOME$/Dropbox (Personal)/Leon Lin/work misc/HK2/assignment2/q2_linear.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="256">
@@ -509,56 +504,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils/data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="17" column="29" selection-start-line="17" selection-start-column="15" selection-end-line="17" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/agents/ComboAgent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="36" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/agents/LearningAgent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1717">
-          <caret line="146" column="19" selection-start-line="146" selection-start-column="19" selection-end-line="146" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utils/deckops.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="71" column="38" selection-start-line="71" selection-start-column="38" selection-end-line="71" selection-end-column="38" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/zsyGame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2225">
-          <caret line="168" column="35" selection-start-line="168" selection-start-column="35" selection-end-line="168" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Dropbox (Personal)/Leon Lin/work misc/HK2/assignment2/core/q_learning.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-878">
@@ -569,17 +514,40 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Unity.py">
+    <entry file="file://$PROJECT_DIR$/zsyGame.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="63" lean-forward="true" selection-start-line="63" selection-end-line="63" />
+        <state relative-caret-position="2703">
+          <caret line="168" column="35" selection-start-line="168" selection-start-column="35" selection-end-line="168" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/deckops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1173">
+          <caret line="71" column="38" selection-start-line="71" selection-start-column="38" selection-end-line="71" selection-end-column="38" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="29" selection-start-line="17" selection-start-column="15" selection-end-line="17" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/agents/DenseNetAgent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-255">
-          <caret line="75" column="51" selection-start-line="75" selection-start-column="51" selection-end-line="75" selection-end-column="51" />
+        <state relative-caret-position="442">
+          <caret line="59" selection-start-line="50" selection-start-column="8" selection-end-line="59" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
@@ -588,7 +556,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/utils/misc.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
+        <state relative-caret-position="510">
           <caret line="30" column="19" selection-start-line="30" selection-start-column="19" selection-end-line="30" selection-end-column="19" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
@@ -596,24 +564,58 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils/test_code_0.py">
+    <entry file="file://$PROJECT_DIR$/agents/LearningAgent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        <state relative-caret-position="-459">
+          <caret line="24" column="4" selection-start-line="24" selection-start-column="4" selection-end-line="31" selection-end-column="48" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Unity.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="23" selection-start-line="5" selection-start-column="23" selection-end-line="7" selection-end-column="62" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Exp2_RoundRobin.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="20" column="81" selection-start-line="20" selection-start-column="67" selection-end-line="20" selection-end-column="81" />
+        <state relative-caret-position="170">
+          <caret line="55" column="31" selection-start-line="55" selection-start-column="4" selection-end-line="55" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/agents/ComboAgent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="58" selection-start-line="14" selection-start-column="58" selection-end-line="14" selection-end-column="58" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Exp4_Aggregation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="36" column="100" selection-start-line="36" selection-start-column="100" selection-end-line="36" selection-end-column="100" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Exp5_BattleRoyale.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="457">
-          <caret line="51" lean-forward="true" selection-start-line="51" selection-end-line="51" />
+        <state>
+          <caret selection-end-line="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/test_code_0.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="107" lean-forward="true" selection-start-line="107" selection-end-line="107" />
         </state>
       </provider>
     </entry>

@@ -60,3 +60,78 @@ for score in scores_sum:
 
 
 ret = testStatic(agents[0])
+
+
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+import zsyGame as zsy
+import numpy as np
+import tensorflow as tf
+import agents.Configurator as cfg
+import utils.misc as ms
+
+from tensorflow.python.tools import freeze_graph
+from tensorflow.python.tools import optimize_for_inference_lib
+
+from os.path import join
+
+
+
+configs = cfg.readConfigs('05_BattleRoyale')
+agents = [cfg.initFromConfig(c) for c in configs]
+killed_agents = []
+init_num_agents = len(agents)
+epochs = 20
+save_every = 100
+test_quantity = 300
+test_winrate_exp = .5
+sim_winrate_exp = .5
+i = 0
+j = 0
+loaded = [agent.loadModel() for agent in agents]
+if loaded[0]:
+    steps = agents[0].sess.run([agent.globalStep for agent in agents])
+    step = np.max(steps)
+    killed = [s < step for s in steps]
+    killed_agents = [agent for i, agent in enumerate(agents) if killed[i]]
+    agents = [agent for i, agent in enumerate(agents) if not killed[i]]
+    j = step
+    i = int(j/500)
+    print("Loaded %d/%d Agents at epoch %d, total steps %d" % (len(agents), init_num_agents, i, j))
+
+
+
+
+
+from agents.ComboAgent import ComboAgent
+sortedAgs = sorted(agents, key=lambda x: -x.vs)
+cc = sortedAgs[:9]
+agent = ComboAgent(cc, "Min")
+savedir = join("Unity Frozen", "Agg2")
+if not os.path.isdir(savedir):
+    os.mkdir(savedir)
+
+
+
+output_node_name = agent.out.name[:-2]
+saver = tf.train.Saver()
+tf.train.write_graph(agent.sess.graph_def, savedir, agent.name + '_graph.pbtxt')
+saver.save(agent.sess, join(savedir, agent.name + '.chkp'))
+tf.reset_default_graph()
+freeze_graph.freeze_graph(join(savedir, agent.name+'_graph.pbtxt'), None, False,
+                          join(savedir, agent.name+'.chkp'), output_node_name,
+                          "save/restore_all", "save/Const:0",
+                          join(savedir, "frozen_"+agent.name+'.bytes'), True, "")
+# GRAPH OPTIMIZING
+
+input_node_names = [ag.sa.name[:-2] for ag in agent.agents]
+input_graph_def = tf.GraphDef()
+with tf.gfile.Open(join(savedir, 'frozen_'+agent.name+'.bytes'), "rb") as f:
+    input_graph_def.ParseFromString(f.read())
+output_graph_def = optimize_for_inference_lib.optimize_for_inference(
+    input_graph_def, input_node_names, [output_node_name],
+    tf.float32.as_datatype_enum)
+with tf.gfile.FastGFile(join(savedir, 'opt_'+agent.name+'.bytes'), "wb") as f:
+    f.write(output_graph_def.SerializeToString())
+print("graph saved!")

@@ -9,21 +9,45 @@ public class LearnedAgent : Agent
     public TFGraph graph;
     private TextAsset graphModel;
     private TFSession session;
-    private string modelName;
+    private int kindIndex;
 
-    private float[,] RunModel(float[,,] input) {
+    private readonly static string[] agentFiles = {
+        "opt_DenseNet3",
+        "opt_ConvNet2",
+        "opt_ComboAgent_Mean_3",
+        "opt_ComboAgent_Min_9"
+    };
+    private readonly static string[][] agentInputs = {
+        new string[] { "DenseNet3" },
+        new string[] { "ConvNet2" },
+        new string[] { "ConvNet2", "ConvNet3", "ConvNet1"},
+        new string[] {"ConvNet2", "ConvNet3", "ConvNet1", "ConvNet4", "ConvNet12", "ConvNet9", "ConvNet6", "ConvNet7", "ConvNet10"}
+    };
+    private readonly static string[] outputNames = {
+        "DenseNet3_2/output/Sigmoid",
+        "ConvNet2_2/output/Sigmoid",
+        "Mean",
+        "Min",
+    };
+
+
+    private float[] RunModel(float[,,] input) {
         var runner = session.GetRunner();
-        runner.AddInput(graph[modelName + "/Placeholder"][0], input);
-        runner.Fetch(graph[modelName + "_2/output/Sigmoid"][0]);
-        float[,] output = runner.Run()[0].GetValue() as float[,];
-        return output;
+        foreach(string s in agentInputs[kindIndex])
+            runner.AddInput(graph[s + "/Placeholder"][0], input);
+        runner.Fetch(graph[outputNames[kindIndex]][0]);
+        if (kindIndex < 2) {
+            float[,] temp = runner.Run()[0].GetValue() as float[,];
+            float[] output = new float[temp.GetLength(0)];
+            return output;
+        } else return runner.Run()[0].GetValue() as float[];
     }
 
-    public LearnedAgent(string modelName) {
+    public LearnedAgent(int kindIndex) {
         name = "AI";
-        this.modelName = modelName;
+        this.kindIndex = kindIndex;
         graph = new TFGraph();
-        graphModel = Resources.Load<TextAsset>("opt_" + modelName);
+        graphModel = Resources.Load<TextAsset>(agentFiles[kindIndex]);
         graph.Import(graphModel.bytes);
         session = new TFSession(graph);
     }
@@ -39,11 +63,8 @@ public class LearnedAgent : Agent
             for (int j = 0; j < 15; j++)
                 histAg[j] += history[i][j];
         }
-
-        //float[,,] input = new float[1, 5, 60];
-        //for (int i = 0; i < 5; i += 2)
-        //    for (int j = 0; j < 60; j++)
-        //        input[0, i, j] = 1;
+        Debug.Log(string.Join(", ", histAg));
+        Debug.Log(string.Join(", ", histOp));
 
         float[,,] input = new float[legalMoves.Count, 5, 60];
         for (int i = 0; i < legalMoves.Count; i++) {
@@ -57,14 +78,12 @@ public class LearnedAgent : Agent
 
 
 
-        float[,] output = RunModel(input);
-        //Debug.Log(output.GetLength(0) + ", " + output.GetLength(1));
+        float[] output = RunModel(input);
         float maxScore = -1;
         int maxIndex = 0;
-        for(int i=0; i<output.GetLength(0); i++) {
-            //Debug.Log(output[i, 0]);
-            if(output[i, 0] > maxScore) {
-                maxScore = output[i, 0];
+        for(int i=0; i<output.Length; i++) {
+            if(output[i] > maxScore) {
+                maxScore = output[i];
                 maxIndex = i;
             }
         }

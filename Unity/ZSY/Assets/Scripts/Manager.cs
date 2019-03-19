@@ -12,6 +12,7 @@ public class Manager : MonoBehaviour
     public GameObject PostGamePanel;
     public GameObject OpeningScreen;
     public GameObject SettingsScreen;
+    private GameObject AboutScreen;
     public Slider thinkSlider;
     public TextMeshProUGUI thinkText;
     public TextMeshProUGUI confidenceToggleText;
@@ -31,7 +32,8 @@ public class Manager : MonoBehaviour
     }
 
     public void tutorialButton() {
-        Popup("Tutorial coming soon", Color.blue);
+        zsy.StartTutorialGame();
+        OpeningScreen.SetActive(false);
     }
     public void playDQNButton() {
         zsy.StartGame(zsy.learnedAgent);
@@ -70,6 +72,7 @@ public class Manager : MonoBehaviour
     public void mainMenu() {
         OpeningScreen.SetActive(true);
         PostGamePanel.SetActive(false);
+        zsy.quitTutorial();
         zsy.playerScore = 0;
         zsy.computerScore = 0;
         zsy.setScoreText();
@@ -80,7 +83,21 @@ public class Manager : MonoBehaviour
         postGameText.text = (win ? "YOU WIN!" : "Sorry, I win this time.") + "\nPlay Again?";
     }
 
+    public void aboutButton(bool on) {
+        AboutScreen.SetActive(on);
+    }
+
+    public void quitButton() {
+        if (OpeningScreen.active) Application.Quit();
+        else mainMenu();
+    }
+
+    private int prevW, prevH;
+
     void Start() {
+        Screen.SetResolution(1280, 720, false);
+        prevW = Screen.width;
+        prevH = Screen.height;
         cv = GameObject.Find("Canvas");
         zsy = cv.GetComponent<zsyGame>();
         cv2 = GameObject.Find("Canvas2");
@@ -88,6 +105,9 @@ public class Manager : MonoBehaviour
             PostGamePanel = cv2.transform.Find("PostGamePanel").gameObject;
             postGameText = PostGamePanel.transform.Find("Text").GetComponent<TextMeshProUGUI>();
             PostGamePanel.SetActive(false);
+            AboutScreen = cv2.transform.Find("AboutScreen").gameObject;
+            AboutScreen.transform.SetAsLastSibling();
+            AboutScreen.SetActive(false);
             OpeningScreen = cv2.transform.Find("OpeningScreen").gameObject;
             SettingsScreen = cv2.transform.Find("SettingsScreen").gameObject;
             thinkSlider = SettingsScreen.transform.Find("Slider").GetComponent<Slider>();
@@ -105,8 +125,28 @@ public class Manager : MonoBehaviour
     }
 
     // Update is called once per frame
+    private const float aspectLock = 9f/16;
+    bool isResizing;
+    private const float resizeTimeout = 1f;
+    private float resizeCountdown;
     void Update()
     {
-        
+        if ((Screen.width != prevW || Screen.height != prevH)) {
+            isResizing = true;
+            prevW = Screen.width;
+            prevH = Screen.height;
+        } else if (isResizing) {
+            isResizing = false;
+            resizeCountdown = resizeTimeout;
+        } else if (resizeCountdown > 0) {
+            resizeCountdown -= Time.deltaTime;
+            if (resizeCountdown < 0) {
+                Screen.SetResolution(Screen.width, (int)(Screen.width * aspectLock), Screen.fullScreen);
+                prevW = Screen.width;
+                prevH = Screen.height;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Escape)) Screen.fullScreen = false;
+            
     }
 }

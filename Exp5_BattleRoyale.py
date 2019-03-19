@@ -52,7 +52,7 @@ if __name__ == '__main__':
     init_num_agents = len(agents)
     epochs = 20
     save_every = 100
-    test_quantity = 500
+    test_quantity = 300
     test_winrate_exp = .5
     sim_winrate_exp = .5
 

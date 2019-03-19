@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3e737cc1-bd5f-465c-beaf-b4d49309b171" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Experiments/empty_exp/configs.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Unity.py" beforeDir="false" afterPath="$PROJECT_DIR$/Unity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Unity/ZSY/ProjectSettings/GraphicsSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/ProjectSettings/GraphicsSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Unity/ZSY/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/ProjectSettings/ProjectSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Unity/ZSY/ProjectSettings/UnityConnectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/ProjectSettings/UnityConnectSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/test_code_0.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/test_code_0.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Exp5_BattleRoyale.py" beforeDir="false" afterPath="$PROJECT_DIR$/Exp5_BattleRoyale.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -107,8 +102,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Exp5_BattleRoyale.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="75" column="40" selection-start-line="75" selection-start-column="40" selection-end-line="75" selection-end-column="40" />
+            <state relative-caret-position="153">
+              <caret line="54" column="21" selection-start-line="54" selection-start-column="21" selection-end-line="54" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -617,8 +612,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Exp5_BattleRoyale.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="75" column="40" selection-start-line="75" selection-start-column="40" selection-end-line="75" selection-end-column="40" />
+        <state relative-caret-position="153">
+          <caret line="54" column="21" selection-start-line="54" selection-start-column="21" selection-end-line="54" selection-end-column="21" />
         </state>
       </provider>
     </entry>

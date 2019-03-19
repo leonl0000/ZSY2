@@ -3,9 +3,6 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
 
-# Next Battle Royal:
-# Kill threshold: 1/2 * (1 - .9**(epoch * num_agents/initial_num_agents)
-# Exploration Prob: 1/epoch * initial_num_agents/num_agents
 
 from Exp3_Discordance import *
 configs = cfg.readConfigs('02_RoundRobin')
@@ -63,38 +60,3 @@ for score in scores_sum:
 
 
 ret = testStatic(agents[0])
-
-from utils.deckops import OpM
-import tensorflow as tf
-hand = tf.placeholder(tf.int32, shape=[15], name="hand")
-handr = tf.cast(tf.reshape(hand, [1, 15]), tf.int8)
-OpMConst = tf.Variable(OpM, name="OpM")
-inds = tf.reduce_all(handr-OpMConst>=0, 1)
-ret = tf.cast(tf.boolean_mask(OpMConst, inds), tf.int32, name='ret')
-init = tf.global_variables_initializer()
-sess = tf.Session()
-sess.run(init)
-
-
-from tensorflow.python.tools import freeze_graph
-from tensorflow.python.tools import optimize_for_inference_lib
-
-tf.train.write_graph(sess.graph_def, 'OpM', 'OpM_graph.pbtxt')
-tf.train.Saver().save(sess, 'OpM/OpM.chkp')
-freeze_graph.freeze_graph('OpM/OpM_graph.pbtxt', None, False,
-                              'OpM/OpM.chkp', 'ret', "save/restore_all", "save/Const:0",
-                              'OpM/frozen_OpM.bytes', True, "")
-
-input_graph_def = tf.GraphDef()
-with tf.gfile.Open('OpM/frozen_OpM.bytes', "rb") as f:
-    input_graph_def.ParseFromString(f.read())
-
-
-output_graph_def = optimize_for_inference_lib.optimize_for_inference(
-        input_graph_def, ['hand'], ['ret'],
-        tf.int32.as_datatype_enum)
-
-
-with tf.gfile.FastGFile('OpM/Opt_OpM.bytes', "wb") as f:
-    f.write(output_graph_def.SerializeToString())
-

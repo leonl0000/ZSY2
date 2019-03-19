@@ -1,6 +1,0 @@
-kind,name,layers,activations,lr,lossfn
-DenseNetAgent,DenseNet1,"[300, 40]","['relu', 'relu']",0.001,log_loss
-DenseNetAgent,DenseNet2,"[300, 40]","['leaky_relu', 'leaky_relu']",0.001,log_loss
-ConvNetAgent,ConvNet1,"[(3, 32), (3, 64), 100]","['relu', 'relu', 'relu']",0.001,log_loss
-ConvNetAgent,ConvNet2,"[(3, 32), (3, 64), 100]","['relu', 'relu', 'sigmoid']",0.001,log_loss
-ConvNetAgent,ConvNet3,"[(3, 32), (3, 64), 100]","['leaky_relu', 'leaky_relu', 'leaky_relu']",0.001,log_loss

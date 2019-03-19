@@ -20,25 +20,31 @@ def testAgents(agents, test_quantity, test_winrate_exp):
         agent.v_oldAg = agent.v_oldAg*test_winrate_exp + (1-test_winrate_exp)*np.sum([g[1] for g in og])/test_quantity
 
 
-def battleRoyale(buffer, agents, sim_winrate_exp, numGames = 50000, multigame_size=100):
-    winrates = [agent.vs for agent in agents]
+def battleRoyale(buffer, agents, sim_winrate_exp, numGames = 50000, max_multigame_size=500):
     newWinRates = np.zeros((len(agents)))
     numMatches = len(agents) * (len(agents) + 1) / 2
     gamesPerPair = int(numGames/numMatches)
     gamesPerPair += (gamesPerPair % 2 == 1)
-    progbar = tf.keras.utils.Progbar(numMatches, 30, 1, 1)
+    totalGames = gamesPerPair * numMatches
+    progbar = tf.keras.utils.Progbar(totalGames, 30, 1, 1)
+    gamesPlayed = 0
     for a in range(len(agents)):
         for b in range(a, len(agents)):
-            progbar.update(a*len(agents) + b)
-            endGames = zsy.multiGame(agents[a], agents[b], gamesPerPair, False)
-            data = [zsy.gameStatesToData(endGame) for endGame in endGames]
-            buffer.addToBuffer(data)
-            if a != b:
-                aWinRate = np.sum([g[1] for g in endGames]) / gamesPerPair
-                newWinRates[a] += aWinRate
-                newWinRates[b] += 1-aWinRate
-    progbar.update(numMatches)
-    newWinRates /= (len(agents)-1)
+            toPlay = gamesPerPair
+            while toPlay > 0:
+                progbar.update(gamesPlayed)
+                gamesThisRound = min(toPlay, max_multigame_size)
+                endGames = zsy.multiGame(agents[a], agents[b], gamesThisRound, False)
+                data = [zsy.gameStatesToData(endGame) for endGame in endGames]
+                buffer.addToBuffer(data)
+                if a != b:
+                    aWins = np.sum([g[1] for g in endGames])
+                    newWinRates[a] += aWins
+                    newWinRates[b] += gamesThisRound - aWins
+                toPlay -= gamesThisRound
+                gamesPlayed += gamesThisRound
+    progbar.update(gamesPlayed)
+    newWinRates /= (gamesPerPair * (len(agents)-1))
     for b, agent in enumerate(agents):
         agent.vs = agent.vs*sim_winrate_exp + (1-sim_winrate_exp)*newWinRates[b]
     buffer.reshuffle()

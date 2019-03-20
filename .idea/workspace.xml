@@ -3,33 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="3e737cc1-bd5f-465c-beaf-b4d49309b171" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Exp5_BattleRoyale.py" beforeDir="false" afterPath="$PROJECT_DIR$/Exp5_BattleRoyale.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Experiments/05_BattleRoyale/configs.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Experiments/05_BattleRoyale/configs.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Exp4_Aggregation.py" beforeDir="false" afterPath="$PROJECT_DIR$/Exp4_Aggregation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Unity/ZSY/Assets/Scenes/1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/Assets/Scenes/1.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Unity/ZSY/Assets/Scripts/Agent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/Assets/Scripts/Agent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Unity/ZSY/Assets/Scripts/CardButton.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/Assets/Scripts/CardButton.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Unity/ZSY/Assets/Scripts/LearnedAgent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/Assets/Scripts/LearnedAgent.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Unity/ZSY/Assets/Scripts/Manager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/Assets/Scripts/Manager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Unity/ZSY/Assets/Scripts/zsyGame.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/Assets/Scripts/zsyGame.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Unity/ZSY/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Unity/ZSY/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/ProjectSettings/ProjectSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Unity/ZSY/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/ProjectSettings/ProjectVersion.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Unity/ZSY/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/ProjectSettings/TagManager.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agents/ComboAgent.py" beforeDir="false" afterPath="$PROJECT_DIR$/agents/ComboAgent.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/ConvNet2.chkp.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/ConvNet2.chkp.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/ConvNet2.chkp.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/ConvNet2_graph.pbtxt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/checkpoint" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/frozen_ConvNet2.bytes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/opt_ConvNet2.bytes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out1/DenseNet3.chkp.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out1/DenseNet3.chkp.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out1/DenseNet3.chkp.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out1/DenseNet3_graph.pbtxt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out1/checkpoint" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out1/frozen_DenseNet3.bytes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/test_code_0.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/test_code_0.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Unity/ZSY/ProjectSettings/GraphicsSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/ProjectSettings/GraphicsSettings.asset" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -69,20 +46,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utils/test_code_0.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="185">
-              <caret line="107" lean-forward="true" selection-start-line="107" selection-end-line="107" />
+            <state relative-caret-position="2159">
+              <caret line="127" selection-start-line="127" selection-end-line="127" selection-end-column="16" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Exp4_Aggregation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="185">
-              <caret line="36" column="100" selection-start-line="36" selection-start-column="100" selection-end-line="36" selection-end-column="100" />
+            <state relative-caret-position="306">
+              <caret line="27" column="16" lean-forward="true" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -210,8 +187,8 @@
         <option value="$PROJECT_DIR$/utils/misc.py" />
         <option value="$PROJECT_DIR$/Exp5_BattleRoyale.py" />
         <option value="$PROJECT_DIR$/agents/ComboAgent.py" />
-        <option value="$PROJECT_DIR$/Exp4_Aggregation.py" />
         <option value="$PROJECT_DIR$/utils/test_code_0.py" />
+        <option value="$PROJECT_DIR$/Exp4_Aggregation.py" />
       </list>
     </option>
   </component>
@@ -335,9 +312,9 @@
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.22257552" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.22257552" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="0" />
+      <window_info anchor="bottom" id="Terminal" order="0" weight="0.3285968" />
       <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="2" weight="0.3285968" />
       <window_info anchor="bottom" id="Message" order="3" />
@@ -598,13 +575,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Exp4_Aggregation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="36" column="100" selection-start-line="36" selection-start-column="100" selection-end-line="36" selection-end-column="100" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Exp5_BattleRoyale.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -614,8 +584,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/utils/test_code_0.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="107" lean-forward="true" selection-start-line="107" selection-end-line="107" />
+        <state relative-caret-position="2159">
+          <caret line="127" selection-start-line="127" selection-end-line="127" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Exp4_Aggregation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="27" column="16" lean-forward="true" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
         </state>
       </provider>
     </entry>

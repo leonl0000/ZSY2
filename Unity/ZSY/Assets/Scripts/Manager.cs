@@ -124,6 +124,10 @@ public class Manager : MonoBehaviour
 
     }
 
+    public void gotoReport() {
+        Application.OpenURL("https://github.com/leonl0000/ZSY2/blob/master/Writeups/Final%20Report.pdf");
+    }
+
     // Update is called once per frame
     private const float aspectLock = 9f/16;
     bool isResizing;

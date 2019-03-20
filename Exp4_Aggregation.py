@@ -10,6 +10,7 @@ from agents.ComboAgent import ComboAgent
 
 def battleRoyale(agents, numGames, maxgames=2000, maxByCombo=True):
     newWinRates = np.zeros((len(agents)))
+    vsStatic = np.zeros((len(agents)-3,3))
     numMatches = len(agents) * (len(agents) - 1) / 2
     progbar = tf.keras.utils.Progbar(numMatches, 30, 1, 1)
     ind = 0
@@ -33,7 +34,8 @@ def battleRoyale(agents, numGames, maxgames=2000, maxByCombo=True):
             ind += 1
             progbar.update(ind)
     newWinRates /= (numGames * (len(agents) - 1))
-    return newWinRates
+    vsStatic /= numGames
+    return newWinRates, vsStatic
 
 
 
@@ -53,9 +55,14 @@ if __name__ == '__main__':
                     ComboAgent(agents[:3], "Max"), ComboAgent(agents[:6], "Max"), ComboAgent(agents[:9],"Max")]
 
     allAgents = agents + comboAgents + staticAgents
-    wr = battleRoyale(allAgents, 1000)
+    wr, vs_static = battleRoyale(allAgents, 1000)
     wr_ag = zip([agent.name for agent in allAgents], wr)
     wr_st = sorted(wr_ag, key=lambda x: -x[1])
-    wrstr += '\r\n'.join([a + ", %.6f"%b for (a, b) in wr_st])
+    wrstr += '\r\n'.join([a + ", %.6f"%b for (a, b) in wr_st]) + '\r\n'
+
+    wrstr += '\r\nEach model vs Random, Greedy, and the old algorithm\r\n'
+    table = zip([agent.name for agent in allAgents[:-3]], wr[:-3], vs_static[:,0], vs_static[:,1], vs_static[:,2])
+    table = sorted(table, key=lambda x: -x[1])
+    wrstr += '\r\n'.join([a + ", %.6f, %.6f, %.6f"%(b,c,d) for (a,_,b,c,d) in table])
     f.writelines(wrstr)
     f.close()

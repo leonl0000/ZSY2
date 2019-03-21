@@ -1,0 +1,57 @@
+Top Models by VS
+1. ConvNet2, 0.57669
+2. ConvNet3, 0.57437
+3. ConvNet1, 0.57324
+4. ConvNet6, 0.56906
+5. ConvNet4, 0.56427
+6. ConvNet5, 0.55225
+7. DenseNet1, 0.47818
+8. DenseNet3, 0.47563
+9. DenseNet2, 0.44717
+ComboAgent_Min_3, 0.647681
+ComboAgent_Mean_3, 0.647246
+ComboAgent_Mean_9, 0.643188
+ComboAgent_Mean_6, 0.639420
+ComboAgent_Min_9, 0.638551
+ComboAgent_Min_6, 0.637246
+ComboAgent_Max_3, 0.617681
+ComboAgent_Max_6, 0.614493
+ConvNet1, 0.551304
+ConvNet2, 0.546957
+ConvNet6, 0.540000
+ConvNet4, 0.536232
+ConvNet3, 0.530435
+ConvNet5, 0.522319
+ComboAgent_Max_9, 0.483043
+dQAgent_old, 0.482899
+DenseNet1, 0.452464
+DenseNet3, 0.447971
+DenseNet2, 0.436957
+Greedy, 0.341014
+DenseNet6, 0.339565
+DenseNet5, 0.318551
+DenseNet4, 0.313333
+Random, 0.071449
+
+Each model vs Random, Greedy, and the old algorithm
+ComboAgent_Min_3, 0.000000, 0.000000, 0.000000
+ComboAgent_Mean_3, 0.000000, 0.000000, 0.000000
+ComboAgent_Mean_9, 0.000000, 0.000000, 0.000000
+ComboAgent_Mean_6, 0.000000, 0.000000, 0.000000
+ComboAgent_Min_9, 0.000000, 0.000000, 0.000000
+ComboAgent_Min_6, 0.000000, 0.000000, 0.000000
+ComboAgent_Max_3, 0.000000, 0.000000, 0.000000
+ComboAgent_Max_6, 0.000000, 0.000000, 0.000000
+ConvNet1, 0.000000, 0.000000, 0.000000
+ConvNet2, 0.000000, 0.000000, 0.000000
+ConvNet6, 0.000000, 0.000000, 0.000000
+ConvNet4, 0.000000, 0.000000, 0.000000
+ConvNet3, 0.000000, 0.000000, 0.000000
+ConvNet5, 0.000000, 0.000000, 0.000000
+ComboAgent_Max_9, 0.000000, 0.000000, 0.000000
+DenseNet1, 0.000000, 0.000000, 0.000000
+DenseNet3, 0.000000, 0.000000, 0.000000
+DenseNet2, 0.000000, 0.000000, 0.000000
+DenseNet6, 0.000000, 0.000000, 0.000000
+DenseNet5, 0.000000, 0.000000, 0.000000
+DenseNet4, 0.000000, 0.000000, 0.000000

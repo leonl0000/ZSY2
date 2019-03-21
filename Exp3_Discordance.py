@@ -59,7 +59,7 @@ def discordanceGame(agentsBattle, agentsAll, prev_min_ave_discordance = 1, disco
             for i in range(len(agentsAll)):
                 for j in range(i, len(agentsAll)):
                     dif_choice[j,i] += action_inds[i] != action_inds[j]
-            dif_choice_by_chance += (len(scores[0])-1)/len(scores)
+            dif_choice_by_chance += (len(scores)-1)/len(scores)
             mx, ave = cosineDiscordance(scores)
             mxs.append(mx)
             if ave < min_ave_discordance:

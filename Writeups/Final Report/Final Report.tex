@@ -226,7 +226,7 @@ The top model from the Battle Royale experiment only slightly beat of the top pe
 \section{Playing Against Humans}
 In parallel with the Round Robin experiments, I built a simulator with a GUI component in Unity in order to test these agents against humans. At the time of releasing the game, I had only run the Aggregator experiment for 100 rounds and the found that the ComboAgent using the minimum Q of the top 9 agents performed the best, so I sent out the game with that model. At the time of writing this report, I have gotten the following gameplay results back, highest to lowest scoring human, in Table 5.
 
-It is an simple game to learn for humans, with one player commenting "the tutorial was SUPER helpful and it’s very easy to pick up!!". The top result is from a player who has played ZSY for a number of years, but the second result is from one who had only just started. The is available to play against on PC and Mac right now\footnote{PC build : \url{https://drive.google.com/file/d/1auOngmTju8Pg8WQKNkGNUvjCXRWxkJOA/view?fbclid=IwAR18pKu3wfDANUOuBwu8d6ozCdQSf1V8C7v9_bL5lqGMwP8AGO0nQs7D-lg}\\
+It is an simple game to learn for humans, with one player commenting "the tutorial was SUPER helpful and it’s very easy to pick up!!". The top result is from a player who has played ZSY for a number of years, but the second result is from one who had only just started. The third is me, and the rest were new to the game. The is available to play against on PC and Mac right now\footnote{PC build : \url{https://drive.google.com/file/d/1auOngmTju8Pg8WQKNkGNUvjCXRWxkJOA/view?fbclid=IwAR18pKu3wfDANUOuBwu8d6ozCdQSf1V8C7v9_bL5lqGMwP8AGO0nQs7D-lg}\\
 Mac build : \url{https://drive.google.com/file/d/1ZQ_-JJ__go3fGu9P5BJSzQ3dYoFxi0rY/view?fbclid=IwAR13No7aV-8KxD9XrLvxBW6z3uXUSghWqXsuYzit_wKFdt0z4ZanSt6sm_k}}
 
 \beginTable{Winrates of humans against the Min9ComboAgent}{cccc}
@@ -234,6 +234,7 @@ Player & Wins : Losses & Winrate & $\sigma$  \\
 \midrule
 1 & 27:32 & 45.8\% & 6.5\% \\
 2 & 29:35 & 45.3\% & 6.2\% \\
+3 & 16:24 & 40.0\% & 7.5\% \\
 3 & 12:20 & 37.5\% & 8.6\% \\
 4 & 20:36 & 35.7\% & 6.4\% \\
 \finTable
@@ -241,11 +242,11 @@ Player & Wins : Losses & Winrate & $\sigma$  \\
 One thing to note that may skew these results is that humans also learn. Player 1, for example, commented that she lost more to the Agent in the beginning than at the end.
 
 \section{Conclusion and Next Steps}
-Without more widescale testing, I cannot say for certain that the Agent has achieved human level performance, but the results look promising. Further, as it is not a very widely played game, there is no true consensus on what is an 'expert' player.
+Without more widescale testing, I cannot say for certain that the Agent has achieved human level performance. The variance in the data is huge, but the results look promising. The previous DQN beat me 40\% of the time. For this agent, the ratio was reverse. Further, as it is not a very widely played game, there is no true consensus on what is an 'expert' player.
 
-However, with the various methods I attempted in this paper, I made significant improvements to the performance of the previous model, beating it roughly 3:1. Probably the two most important factors were adding a conv net model and an aggregator model. I expected a conv net to be more effective, but the sheer gap between that and the fully connect models was a suprise. The aggregator model was a complete surprise in how much of a difference it made: I assumed it may raise the winrates by 1 or at most 2 percent, but they made such a huge difference.
+However, with the various methods I attempted in this paper, I made significant improvements to the performance of the previous model, beating it roughly 3:1. Probably the two most important factors were adding a conv net model and an aggregator model. I expected a conv net to be more effective, but the sheer gap between that and the fully connect models was a suprise. The aggregator model was a complete surprise in how much of a difference it made: I assumed they may raise the winrates by 1 or at most 2 percent, but they made such a huge difference.
 
-It's hard to say how much the Battle Royale method for exploration helped the models actually explore more options, and it certainly seems, from experiment 2, that models can still overfit in some way even with the exploration. But, it did help try out many more different models than I otherwise would have. In experiments 2 and 5, even though training involved many models and the simulation only involved 2, the simulation stage of each epoch still took longer than the training phase. If not for this method of pooling simulation results, I would not have had enough different models to try an aggregate model with. 
+It's hard to say how much the Battle Royale method for exploration helped the models actually explore more options, and it certainly seems, from experiment 2, that models can still overfit in some way even with the exploration. But, it did help try out many more different models than I otherwise would have. In experiments 2 and 5, even though training involved many models and the simulation only involved 2 at a time, the simulation stage of each epoch still took longer than the training phase. If not for this method of pooling simulation results, I would not have had enough different models to try an aggregator model with. 
 
 There are still many things I wanted to try that I didn't get the chance to because I prioritized the things I tried in this paper. First of all, I rewrote the simulator to store each data point in the history instead of just the summed histories and had the agents sum the histories on the fly. This was because I wanted to try out an RNN agents that didn't just sum over the histories but treated each move an an individual event, but I did not write an RNN agent. Secondly, the Unity game was written at the very end and I didn't write in code to send game results to a server: players just manually reported to me their scores. With this game written, it is possible to collect human data to potentially train against. Also, with the game written, it would be possible to better visualize different tricky games by replaying them visually rather than looking over a bunch of numbers representing cards. 
 

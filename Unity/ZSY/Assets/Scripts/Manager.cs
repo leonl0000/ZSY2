@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using TMPro;
 using System.IO;
 
+
+
 public class Manager : MonoBehaviour
 {
     public GameObject cv;
@@ -95,7 +97,7 @@ public class Manager : MonoBehaviour
     private int prevW, prevH;
 
     void Start() {
-        Screen.SetResolution(1280, 720, false);
+        //Screen.SetResolution(1280, 720, false);
         prevW = Screen.width;
         prevH = Screen.height;
         cv = GameObject.Find("Canvas");
@@ -135,22 +137,22 @@ public class Manager : MonoBehaviour
     private float resizeCountdown;
     void Update()
     {
-        if ((Screen.width != prevW || Screen.height != prevH)) {
-            isResizing = true;
-            prevW = Screen.width;
-            prevH = Screen.height;
-        } else if (isResizing) {
-            isResizing = false;
-            resizeCountdown = resizeTimeout;
-        } else if (resizeCountdown > 0) {
-            resizeCountdown -= Time.deltaTime;
-            if (resizeCountdown < 0) {
-                Screen.SetResolution(Screen.width, (int)(Screen.width * aspectLock), Screen.fullScreen);
-                prevW = Screen.width;
-                prevH = Screen.height;
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Escape)) Screen.fullScreen = false;
+        //if ((Screen.width != prevW || Screen.height != prevH)) {
+        //    isResizing = true;
+        //    prevW = Screen.width;
+        //    prevH = Screen.height;
+        //} else if (isResizing) {
+        //    isResizing = false;
+        //    resizeCountdown = resizeTimeout;
+        //} else if (resizeCountdown > 0) {
+        //    resizeCountdown -= Time.deltaTime;
+        //    if (resizeCountdown < 0) {
+        //        Screen.SetResolution(Screen.width, (int)(Screen.width * aspectLock), Screen.fullScreen);
+        //        prevW = Screen.width;
+        //        prevH = Screen.height;
+        //    }
+        //}
+        //if (Input.GetKeyDown(KeyCode.Escape)) Screen.fullScreen = false;
             
     }
 }

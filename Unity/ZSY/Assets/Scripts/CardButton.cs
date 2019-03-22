@@ -11,6 +11,8 @@ public class CardButton
     public Image bg;
     public Button bt;
     public Image btimg;
+    private const float doubleClickTimeout = .1f;
+    private float doubleClickTimer;
     private static Color SelectedColor = new Color(0, .5f, 1);
 
     public static CardButton NewCardButton(string card, Action<int, bool> action = null, int actionNum = 0) {
@@ -21,13 +23,15 @@ public class CardButton
         cb.btimg = cb.bt.GetComponent<Image>();
         t.GetComponent<Image>().sprite = Resources.Load<Sprite>(Path.Combine("Cards", card));
         if (action != null) {
+            cb.doubleClickTimer = 0;
             EventTrigger trigger = cb.bt.gameObject.AddComponent<EventTrigger>();
             var pointerDown = new EventTrigger.Entry();
             pointerDown.eventID = EventTriggerType.PointerDown;
             pointerDown.callback.AddListener(delegate {
-                if(cb.bt.enabled) action(actionNum, cb.flipSelected());
+                action(actionNum, cb.flipSelected());
             });
-            trigger.triggers.Add(pointerDown);
+            trigger.triggers.Add(pointerDown);                
+
             var pointerEnter = new EventTrigger.Entry();
             pointerEnter.eventID = EventTriggerType.PointerEnter;
             pointerEnter.callback.AddListener(delegate {
@@ -40,6 +44,8 @@ public class CardButton
     }
 
     public bool flipSelected() {
+        if (Time.fixedTime < doubleClickTimer) return btimg.color == SelectedColor;
+        doubleClickTimer = Time.fixedTime + doubleClickTimeout;
         if (btimg.color == SelectedColor) {
             btimg.color = Color.white;
             return false;

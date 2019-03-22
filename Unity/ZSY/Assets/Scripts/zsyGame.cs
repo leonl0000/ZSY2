@@ -154,7 +154,6 @@ public class zsyGame : MonoBehaviour
         Tuple<int[], float> moveAndConf = PlayingAgent.GetMove(AgentHand, agentLegalMoves, History);    
         clearTable();
         int[] move = moveAndConf.Item1;
-        float w = 41;
         float f = Screen.width / 631f;
         for (int i = 0; i < 15; i++) {
             if (move[i] == 0) continue;
@@ -237,7 +236,7 @@ public class zsyGame : MonoBehaviour
         allIncreasing.CopyTo(isIncreasing, 0);
         curMove = new int[15];
         int turn = Random.Range(0, 2);
-        if(agent != null) PlayingAgent = agent;
+        if (agent != null) PlayingAgent = agent;
         if (turn == 1) DelayAgentPlay();
         else LegalMoves = GetOpeningMoves(PlayerHand);
     }

@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using TensorFlow;
 
+#if UNITY_EDITOR
 public class LearnedAgent : Agent
 {
     public TFGraph graph;
@@ -92,3 +93,4 @@ public class LearnedAgent : Agent
         return new Tuple<int[], float>(legalMoves[maxIndex], maxScore);
     }
 }
+#endif

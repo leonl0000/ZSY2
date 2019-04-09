@@ -2,34 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3e737cc1-bd5f-465c-beaf-b4d49309b171" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Exp3_Discordance.py" beforeDir="false" afterPath="$PROJECT_DIR$/Exp3_Discordance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Exp4_Aggregation.py" beforeDir="false" afterPath="$PROJECT_DIR$/Exp4_Aggregation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Experiments/04_Aggregation/out.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Experiments/04_Aggregation/out.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Experiments/04_Aggregation/out_05BR_1000.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Experiments/04_Aggregation/out_05BR_1000.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpM/OpM.chkp.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpM/OpM.chkp.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpM/OpM.chkp.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpM/OpM_graph.pbtxt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpM/Opt_OpM.bytes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpM/checkpoint" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OpM/frozen_OpM.bytes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Writeups/Milestone.aux" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Writeups/Milestone.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Writeups/Milestone.out" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Writeups/Milestone.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Writeups/Milestone.synctex.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Writeups/Milestone.tex" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Writeups/Untitled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Writeups/Untitled2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Writeups/ZSY Rules.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Writeups/algorithm.sty" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Writeups/algorithmic.sty" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Writeups/fancyhdr.sty" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Writeups/h1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Writeups/h2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Writeups/h3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Writeups/icml2018.sty" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Unity/ZSY/Assets/Scenes/1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Unity/ZSY/Assets/Scenes/1.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Writeups/Poster/Poster1.png" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -42,8 +16,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/agents/ComboAgent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-102">
-              <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+            <state relative-caret-position="595">
+              <caret line="36" selection-start-line="36" selection-end-line="36" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -51,7 +25,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Exp4_Aggregation.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="221">
@@ -60,10 +34,19 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/text.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/agents/LearningAgent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-459">
+            <state relative-caret-position="391">
               <caret line="24" column="4" selection-start-line="24" selection-start-column="4" selection-end-line="31" selection-end-column="48" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
@@ -75,7 +58,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utils/misc.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
+            <state relative-caret-position="459">
               <caret line="30" column="19" selection-start-line="30" selection-start-column="19" selection-end-line="30" selection-end-column="19" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
@@ -152,14 +135,15 @@
         <option value="$PROJECT_DIR$/Exp3_Discordance.py" />
         <option value="$PROJECT_DIR$/Exp5_BattleRoyale.py" />
         <option value="$PROJECT_DIR$/Exp4_Aggregation.py" />
+        <option value="$PROJECT_DIR$/text.txt" />
+        <option value="$PROJECT_DIR$/text.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-12" />
-    <option name="y" value="-12" />
-    <option name="width" value="1947" />
-    <option name="height" value="1107" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="793" />
+    <option name="width" value="1136" />
+    <option name="height" value="1031" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -169,7 +153,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -191,6 +174,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -271,10 +255,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
+    <frame x="529" y="0" width="757" height="687" extended-state="0" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.22257552" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.5208333" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" weight="0.3285968" />
       <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" />
@@ -495,32 +479,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils/misc.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="30" column="19" selection-start-line="30" selection-start-column="19" selection-end-line="30" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Exp1_Batch_Size.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="18" column="31" selection-start-line="18" selection-start-column="31" selection-end-line="18" selection-end-column="31" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/agents/LearningAgent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-459">
-          <caret line="24" column="4" selection-start-line="24" selection-start-column="4" selection-end-line="31" selection-end-column="48" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -548,10 +512,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/agents/ComboAgent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-102">
-          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+        <state relative-caret-position="595">
+          <caret line="36" selection-start-line="36" selection-end-line="36" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/agents/LearningAgent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="24" column="4" selection-start-line="24" selection-start-column="4" selection-end-line="31" selection-end-column="48" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/misc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="30" column="19" selection-start-line="30" selection-start-column="19" selection-end-line="30" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -560,6 +544,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="46" column="18" selection-start-line="46" selection-start-column="18" selection-end-line="46" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/text.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
         </state>
       </provider>
     </entry>

@@ -11,6 +11,6 @@ Play the 2 player version of the game now! Tutorial level included for those new
 
 In 2018, I attempted to create a Deep Q Agent to play this game better than humans, which you can read about [here](https://github.com/leonl0000/ZSY/blob/master/writeups/CS%20230%20Project%20final%20writeup.pdf) and [here](https://github.com/leonl0000/ZSY/blob/master/writeups/poster.png). To make a long story short, it failed by only having a win rate of ~40%. The agent was too simple, the training did not incorporate more advanced RL methods like fixed targets, and I didn't even have a good sample of humans to test it against.
 
-This time, I seem to have reached human level performance. The 3 key improvements were: Conv nets, assembly models, and battle royale exploration. Read the final writeup [here](Writeups/Final Report.pdf)
+This time, I seem to have reached human level performance. The 3 key improvements were: Conv nets, assembly models, and battle royale exploration. Read the final writeup [here](Writeups/Final%20Report.pdf)
 
 
